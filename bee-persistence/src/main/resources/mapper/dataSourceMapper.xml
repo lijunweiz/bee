@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unminded.bee.persistence.mapper.DataSourceMapper">
+
+    <select id="list" resultType="DataSourceEntity">
+        select dataSourceId,
+            dataSourceName,
+            dataSourceType,
+            `status`,
+            `desc`,
+            protocol,
+            method,
+            address,
+            queryParam,
+            headers,
+            requestBody,
+            extractVariable,
+            createdTime,
+            updateTime
+        from t_data_source
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="dataSourceName != null and dataSourceName != ''">
+                and dataSourceName = #{dataSourceName}
+            </if>
+            <if test="dataSourceType != null and dataSourceType != ''">
+                and dataSourceType = #{dataSourceType}
+            </if>
+            <if test="startTime != null">
+                and updateTime >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and updateTime &lt; #{endTime}
+            </if>
+            <if test="ascending != null and ascending">
+                order by updateTime asc
+            </if>
+            <if test="ascending != null and !ascending">
+                order by updateTime desc
+            </if>
+            <if test="!((startIndex != null and startIndex >= 0) and (endIndex != null and endIndex > 0))">
+                limit 20
+            </if>
+        </trim>
+
+    </select>
+
+    <insert id="insert" parameterType="DataSourceEntity" useGeneratedKeys="true" keyProperty="dataSourceId">
+        insert into
+            t_data_source (`dataSourceName`,
+                               `dataSourceType`,
+                               `status`,
+                               `desc`,
+                               `protocol`,
+                               `method`,
+                               `address`,
+                               `queryParam`,
+                               `headers`,
+                               `requestBody`,
+                               `extractVariable`,
+                               `createdTime`,
+                               `updateTime`)
+        values (#{dataSourceName},
+                #{dataSourceType},
+                #{status},
+                #{desc},
+                #{protocol},
+                #{method},
+                #{address},
+                #{queryParam},
+                #{headers},
+                #{requestBody},
+                #{extractVariable},
+                #{createdTime},
+                #{updateTime})
+    </insert>
+
+
+</mapper>

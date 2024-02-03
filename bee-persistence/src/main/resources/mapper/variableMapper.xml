@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unminded.bee.persistence.mapper.VariableMapper">
+
+    <select id="list" resultType="VariableEntity">
+        select variableId,
+            variableNameEn,
+            variableNameZh,
+            variableDesc,
+            variableType,
+            variableSource,
+            variableParam,
+            variableStatus,
+            variableVersion,
+            variableAddress,
+            author,
+            requirementName,
+            createdTime,
+            updateTime
+        from t_variable
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="variableNameEn != null and variableNameEn != ''">
+                and variableNameEn = #{variableNameEn}
+            </if>
+            <if test="variableType != null and variableType != ''">
+                and variableType = #{variableType}
+            </if>
+            <if test="variableSource != null and variableSource != ''">
+                and variableSource = #{variableSource}
+            </if>
+            <if test="startTime != null">
+                and updateTime >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                and updateTime &lt; #{endTime}
+            </if>
+            <if test="ascending != null and ascending">
+                order by updateTime asc
+            </if>
+            <if test="ascending != null and !ascending">
+                order by updateTime desc
+            </if>
+            <if test="(startIndex != null and startIndex >= 0) and (endIndex != null and endIndex > 0)">
+                limit #{startIndex}, #{endIndex}
+            </if>
+            <if test="!((startIndex != null and startIndex >= 0) and (endIndex != null and endIndex > 0))">
+                limit 20
+            </if>
+        </trim>
+
+    </select>
+
+    <select id="findLastOne" resultType="VariableEntity">
+        select variableId,
+               variableNameEn,
+               variableNameZh,
+               variableDesc,
+               variableType,
+               variableSource,
+               variableParam,
+               variableStatus,
+               variableVersion,
+               variableAddress,
+               author,
+               requirementName,
+               createdTime,
+               updateTime
+        from t_variable
+            where
+            <if test="variableNameEn != null and variableNameEn !=''">
+                variableNameEn = #{variableNameEn}
+            </if>
+            order by createdTime desc
+            limit 1
+    </select>
+
+    <select id="findOneById" resultType="VariableEntity">
+        select variableId,
+               variableNameEn,
+               variableNameZh,
+               variableDesc,
+               variableType,
+               variableSource,
+               variableParam,
+               variableStatus,
+               variableVersion,
+               variableAddress,
+               author,
+               requirementName,
+               createdTime,
+               updateTime
+        from t_variable
+            where
+            <if test="variableId != null and variableId > 0">
+                variableId = #{variableId} limit 1
+            </if>
+    </select>
+
+    <insert id="insert" parameterType="VariableEntity" useGeneratedKeys="true" keyProperty="variableId">
+        insert into
+            t_variable (`variableNameEn`,
+                               `variableNameZh`,
+                               `variableDesc`,
+                               `variableType`,
+                               `variableSource`,
+                               `variableParam`,
+                               `variableStatus`,
+                               `variableVersion`,
+                               `variableAddress`,
+                               `author`,
+                               `requirementName`,
+                               `createdTime`,
+                               `updateTime`)
+        values (#{variableNameEn},
+                #{variableNameZh},
+                #{variableDesc},
+                #{variableType},
+                #{variableSource},
+                #{variableParam},
+                #{variableStatus},
+                #{variableVersion},
+                #{variableAddress},
+                #{author},
+                #{requirementName},
+                #{createdTime},
+                #{updateTime})
+    </insert>
+
+    <update id="update" parameterType="VariableEntity">
+        update t_variable set
+            <if test="variableDesc != null">
+                variableDesc = #{variableDesc},
+            </if>
+            <if test="variableType != null">
+                variableType = #{variableType},
+            </if>
+            <if test="variableSource != null">
+                variableSource = #{variableSource},
+            </if>
+            <if test="variableParam != null">
+                variableParam = #{variableParam},
+            </if>
+            <if test="variableStatus != null">
+                variableStatus = #{variableStatus},
+            </if>
+            <if test="variableVersion != null">
+                variableVersion = #{variableVersion} + 1,
+            </if>
+            <if test="variableAddress != null">
+                variableAddress = #{variableAddress},
+            </if>
+            <if test="requirementName != null">
+                requirementName = #{requirementName},
+            </if>
+            updateTime = #{updateTime}
+        where
+            <if test="variableId != null  and variableId > 0">
+                variableId = #{variableId}
+            </if>
+            <if test="variableId == null or variableId &gt; 0">
+                variableNameEn = #{variableNameEn}
+            </if>
+    </update>
+
+
+
+</mapper>
