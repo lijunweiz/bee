@@ -36,12 +36,12 @@ public class VariableController {
 
     @GetMapping("/list")
     public Result queryList(@RequestParam(value = "variableNameEn", required = false) String variableNameEn,
-                            @RequestParam(value = "variableSource", required = false) String variableSource,
-                            @RequestParam(value = "variableType", required = false) String variableType) {
+                            @RequestParam(value = "dataSourceName", required = false) String dataSourceName,
+                            @RequestParam(value = "dataSourceType", required = false) String dataSourceType) {
         QueryVariableCriteria criteria = new QueryVariableCriteria()
                 .setVariableNameEn(variableNameEn)
-                .setVariableSource(variableSource)
-                .setVariableType(variableType)
+                .setDataSourceName(dataSourceName)
+                .setDataSourceType(dataSourceType)
                 .setStartTime(DateUtils.ymdHms(DateUtils.plusDays(LocalDateTime.now(), -30)));
         List<VariableEntity> list = variableService.list(criteria);
         Map<String, Object> data = new HashMap<>();
@@ -64,13 +64,11 @@ public class VariableController {
                 .setVariableNameEn(request.getVariableNameEn())
                 .setVariableNameZh(request.getVariableNameZh())
                 .setVariableDesc(request.getVariableDesc())
-                .setVariableSource(request.getVariableSource())
-                .setVariableType(request.getVariableAddress())
-                .setVariableParam(Objects.isNull(request.getVariableParam()) ? BeeConstant.EMPTY_STRING : request.getVariableParam())
+                .setDataSourceType(request.getDataSourceType())
+                .setDataSourceName(request.getDataSourceName())
                 .setVariableStatus(VariableStatusEnum.FRESH.getStatus())
                 .setVariableVersion(BeeConstant.ZERO)
                 .setAuthor(request.getAuthor())
-                .setVariableAddress(request.getVariableAddress())
                 .setRequirementName(request.getRequirementName())
                 .setCreatedTime(LocalDateTime.now())
                 .setUpdateTime(LocalDateTime.now());
@@ -91,12 +89,10 @@ public class VariableController {
         VariableEntity entity = new VariableEntity()
                 .setVariableNameEn(request.getVariableNameEn())
                 .setVariableDesc(request.getVariableDesc())
-                .setVariableSource(request.getVariableSource())
-                .setVariableType(request.getVariableType())
-                .setVariableParam(request.getVariableParam())
+                .setDataSourceType(request.getDataSourceType())
+                .setDataSourceName(request.getDataSourceName())
                 .setVariableStatus(request.getVariableStatus())
                 .setVariableVersion(request.getVariableVersion())
-                .setVariableAddress(request.getVariableAddress())
                 .setAuthor(request.getAuthor())
                 .setRequirementName(request.getRequirementName())
                 .setUpdateTime(LocalDateTime.now());

@@ -7,12 +7,10 @@
             variableNameEn,
             variableNameZh,
             variableDesc,
-            variableType,
-            variableSource,
-            variableParam,
+            dataSourceName,
+            dataSourceType,
             variableStatus,
             variableVersion,
-            variableAddress,
             author,
             requirementName,
             createdTime,
@@ -22,11 +20,11 @@
             <if test="variableNameEn != null and variableNameEn != ''">
                 and variableNameEn = #{variableNameEn}
             </if>
-            <if test="variableType != null and variableType != ''">
-                and variableType = #{variableType}
+            <if test="dataSourceName != null and dataSourceName != ''">
+                and dataSourceName = #{dataSourceName}
             </if>
-            <if test="variableSource != null and variableSource != ''">
-                and variableSource = #{variableSource}
+            <if test="dataSourceType != null and dataSourceType != ''">
+                and dataSourceType = #{dataSourceType}
             </if>
             <if test="startTime != null">
                 and updateTime >= #{startTime}
@@ -52,19 +50,17 @@
 
     <select id="findLastOne" resultType="VariableEntity">
         select variableId,
-               variableNameEn,
-               variableNameZh,
-               variableDesc,
-               variableType,
-               variableSource,
-               variableParam,
-               variableStatus,
-               variableVersion,
-               variableAddress,
-               author,
-               requirementName,
-               createdTime,
-               updateTime
+            variableNameEn,
+            variableNameZh,
+            variableDesc,
+            dataSourceName,
+            dataSourceType,
+            variableStatus,
+            variableVersion,
+            author,
+            requirementName,
+            createdTime,
+            updateTime
         from t_variable
             where
             <if test="variableNameEn != null and variableNameEn !=''">
@@ -76,19 +72,17 @@
 
     <select id="findOneById" resultType="VariableEntity">
         select variableId,
-               variableNameEn,
-               variableNameZh,
-               variableDesc,
-               variableType,
-               variableSource,
-               variableParam,
-               variableStatus,
-               variableVersion,
-               variableAddress,
-               author,
-               requirementName,
-               createdTime,
-               updateTime
+            variableNameEn,
+            variableNameZh,
+            variableDesc,
+            dataSourceName,
+            dataSourceType,
+            variableStatus,
+            variableVersion,
+            author,
+            requirementName,
+            createdTime,
+            updateTime
         from t_variable
             where
             <if test="variableId != null and variableId > 0">
@@ -101,12 +95,10 @@
             t_variable (`variableNameEn`,
                                `variableNameZh`,
                                `variableDesc`,
-                               `variableType`,
-                               `variableSource`,
-                               `variableParam`,
+                               `dataSourceName`,
+                               `dataSourceType`,
                                `variableStatus`,
                                `variableVersion`,
-                               `variableAddress`,
                                `author`,
                                `requirementName`,
                                `createdTime`,
@@ -114,12 +106,10 @@
         values (#{variableNameEn},
                 #{variableNameZh},
                 #{variableDesc},
-                #{variableType},
-                #{variableSource},
-                #{variableParam},
+                #{dataSourceName},
+                #{dataSourceType},
                 #{variableStatus},
                 #{variableVersion},
-                #{variableAddress},
                 #{author},
                 #{requirementName},
                 #{createdTime},
@@ -131,23 +121,17 @@
             <if test="variableDesc != null">
                 variableDesc = #{variableDesc},
             </if>
-            <if test="variableType != null">
-                variableType = #{variableType},
+            <if test="dataSourceName != null and dataSourceName != ''">
+                dataSourceName = #{dataSourceName},
             </if>
-            <if test="variableSource != null">
-                variableSource = #{variableSource},
-            </if>
-            <if test="variableParam != null">
-                variableParam = #{variableParam},
+            <if test="dataSourceType != null and dataSourceType != ''">
+                dataSourceType = #{dataSourceType},
             </if>
             <if test="variableStatus != null">
                 variableStatus = #{variableStatus},
             </if>
             <if test="variableVersion != null">
                 variableVersion = #{variableVersion} + 1,
-            </if>
-            <if test="variableAddress != null">
-                variableAddress = #{variableAddress},
             </if>
             <if test="requirementName != null">
                 requirementName = #{requirementName},

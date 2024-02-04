@@ -1,7 +1,6 @@
 package cn.unminded.bee.manage.dto.variable.request;
 
 import lombok.Data;
-import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
 
@@ -32,34 +31,22 @@ public class AddVariableRequest {
     private String variableDesc;
 
     /**
-     * 变量来源，如来自哪个系统，内部或外部，此处指系统id或名称
+     * 数据源名称
      */
-    @NotBlank(message = "变量来源不能为空")
-    private String variableSource;
+    @NotBlank(message = "数据源名称不能为空")
+    private String dataSourceName;
 
     /**
-     * 变量类型，比如复贷授信
+     * 数据源类型，比如信用中国
      */
-    @Nullable
-    private String variableType;
-
-    /**
-     * 变量获取地址，如: http://127.0.0.1/v/get/v1
-     */
-    @NotBlank(message = "变量获取地址不能为空")
-    private String variableAddress;
+    @NotBlank(message = "数据源类型不能为空")
+    private String dataSourceType;
 
     /**
      * 变量作者
      */
     @NotBlank(message = "变量作者不能为空")
     private String author;
-
-    /**
-     * 调用变量获取地址时的入参，默认json
-     */
-    @Nullable
-    private String variableParam;
 
     /**
      * 需求名称，改变量是哪个需求提出的，以供后续查询

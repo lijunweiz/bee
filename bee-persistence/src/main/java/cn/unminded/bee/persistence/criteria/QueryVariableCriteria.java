@@ -12,9 +12,9 @@ public class QueryVariableCriteria {
 
     private String variableNameEn;
 
-    private String variableSource;
+    private String dataSourceName;
 
-    private String variableType;
+    private String dataSourceType;
 
     private boolean ascending = false;
 

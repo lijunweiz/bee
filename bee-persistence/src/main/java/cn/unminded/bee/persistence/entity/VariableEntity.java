@@ -34,19 +34,14 @@ public class VariableEntity {
     private String variableDesc;
 
     /**
-     * 变量类型
+     * 数据源名称
      */
-    private String variableType;
+    private String dataSourceName;
 
     /**
-     * 变量来源
+     * 数据源类型
      */
-    private String variableSource;
-
-    /**
-     * 获取变量时的入参
-     */
-    private String variableParam;
+    private String dataSourceType;
 
     /**
      * 变量当前的状态
@@ -57,11 +52,6 @@ public class VariableEntity {
      * 变量版本
      */
     private Integer variableVersion;
-
-    /**
-     * 获取变量时的地址
-     */
-    private String variableAddress;
 
     /**
      * 变量创建者
