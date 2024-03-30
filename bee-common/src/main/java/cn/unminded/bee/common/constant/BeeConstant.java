@@ -21,4 +21,7 @@ public class BeeConstant {
 
     public static final String EMPTY_STRING = StringUtils.EMPTY;
 
+    /** bee开始开发时间 */
+    public static final String BEE_START_TIME = "2024-01-01 00:00:00";
+
 }

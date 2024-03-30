@@ -7,7 +7,6 @@ import cn.unminded.bee.manage.dto.datasource.request.AddDataSourceRequest;
 import cn.unminded.bee.persistence.criteria.QueryDataSourceCriteria;
 import cn.unminded.bee.persistence.entity.DataSourceEntity;
 import cn.unminded.bee.service.DataSourceService;
-import cn.unminded.rtool.util.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -40,7 +39,6 @@ public class DataSourceController {
     public Result query(@RequestParam(value = "dataSourceName", required = false) String dataSourceName) {
         Map<String, Object> data = new HashMap<>();
         QueryDataSourceCriteria criteria = new QueryDataSourceCriteria()
-                .setStartTime(DateUtils.ymdHms(DateUtils.plusDays(LocalDateTime.now(), -30)))
                 .setDataSourceName(dataSourceName);
         data.put("list", dataSourceService.list(criteria));
         return Result.ok(data);

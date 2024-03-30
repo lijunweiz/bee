@@ -9,7 +9,6 @@ import cn.unminded.bee.manage.dto.variable.request.UpdateVariableRequest;
 import cn.unminded.bee.persistence.criteria.QueryVariableCriteria;
 import cn.unminded.bee.persistence.entity.VariableEntity;
 import cn.unminded.bee.service.VariableService;
-import cn.unminded.rtool.util.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -41,8 +40,7 @@ public class VariableController {
         QueryVariableCriteria criteria = new QueryVariableCriteria()
                 .setVariableNameEn(variableNameEn)
                 .setDataSourceName(dataSourceName)
-                .setDataSourceType(dataSourceType)
-                .setStartTime(DateUtils.ymdHms(DateUtils.plusDays(LocalDateTime.now(), -30)));
+                .setDataSourceType(dataSourceType);
         List<VariableEntity> list = variableService.list(criteria);
         Map<String, Object> data = new HashMap<>();
         data.put("items", list);

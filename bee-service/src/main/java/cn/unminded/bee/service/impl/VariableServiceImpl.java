@@ -1,5 +1,6 @@
 package cn.unminded.bee.service.impl;
 
+import cn.unminded.bee.common.constant.BeeConstant;
 import cn.unminded.bee.common.exception.VariableManageException;
 import cn.unminded.bee.persistence.criteria.QueryVariableCriteria;
 import cn.unminded.bee.persistence.entity.VariableEntity;
@@ -26,6 +27,9 @@ public class VariableServiceImpl implements VariableService {
 
     @Override
     public List<VariableEntity> list(QueryVariableCriteria criteria) {
+        if (StringUtils.isBlank(criteria.getStartTime())) {
+            criteria.setStartTime(BeeConstant.BEE_START_TIME);
+        }
         if (StringUtils.isBlank(criteria.getStartTime()) && StringUtils.isBlank(criteria.getVariableNameEn())) {
             throw new VariableManageException("查询开始时间和变量英文不能同时为空");
         }
@@ -35,7 +39,7 @@ public class VariableServiceImpl implements VariableService {
     @Override
     public List<VariableEntity> list(String startTime, String endTime, Integer pageSize, boolean asc) {
         if (StringUtils.isBlank(startTime)) {
-            startTime = DateUtils.ymd();
+            startTime = BeeConstant.BEE_START_TIME;
         }
         if (StringUtils.isBlank(endTime)) {
             endTime = DateUtils.ymdHms();
@@ -63,7 +67,7 @@ public class VariableServiceImpl implements VariableService {
 
     @Override
     public boolean save(VariableEntity entity) {
-        return variableMapper.insert(entity) > 0;
+        return variableMapper.insert(entity) == 1;
     }
 
     @Override

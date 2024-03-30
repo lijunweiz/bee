@@ -1,5 +1,6 @@
 package cn.unminded.bee.service.impl;
 
+import cn.unminded.bee.common.constant.BeeConstant;
 import cn.unminded.bee.common.exception.VariableManageException;
 import cn.unminded.bee.persistence.criteria.QueryDataSourceCriteria;
 import cn.unminded.bee.persistence.entity.DataSourceEntity;
@@ -24,6 +25,9 @@ public class DataSourceServiceImpl implements DataSourceService {
 
     @Override
     public List<DataSourceEntity> list(QueryDataSourceCriteria criteria) {
+        if (StringUtils.isBlank(criteria.getStartTime())) {
+            criteria.setStartTime(BeeConstant.BEE_START_TIME);
+        }
         if (StringUtils.isBlank(criteria.getStartTime()) && StringUtils.isBlank(criteria.getDataSourceName())) {
             throw new VariableManageException("查询开始时间和数据源名称不能同时为空");
         }
@@ -32,7 +36,6 @@ public class DataSourceServiceImpl implements DataSourceService {
 
     @Override
     public boolean save(DataSourceEntity entity) {
-        dataSourceMapper.insert(entity);
-        return true;
+        return dataSourceMapper.insert(entity) == 1;
     }
 }

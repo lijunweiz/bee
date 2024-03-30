@@ -1,11 +1,8 @@
 package cn.unminded.bee.common.config;
 
 import cn.unminded.bee.common.util.LogHelper;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -43,12 +40,12 @@ public class LogConfig {
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = Objects.isNull(requestAttributes) ? null : requestAttributes.getRequest();
-        String req = LogHelper.appendUrl(request) + " " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName()
-                + " request: " + objectMapper.writeValueAsString(this.filterArgs(joinPoint.getArgs()));
+        String req = LogHelper.appendUrl(request) + " " + objectMapper.writeValueAsString(this.filterArgs(joinPoint.getArgs()));
+        log.info("request: {}", req);
         long start = System.currentTimeMillis();
         Object resp = joinPoint.proceed(joinPoint.getArgs());
         long end = System.currentTimeMillis();
-        log.info("request: {}, response: {}, 执行耗时: {}ms", req, objectMapper.writeValueAsString(resp), (end - start));
+        log.info("response: {}, 执行耗时: {}ms", objectMapper.writeValueAsString(resp), (end - start));
         return resp;
     }
 

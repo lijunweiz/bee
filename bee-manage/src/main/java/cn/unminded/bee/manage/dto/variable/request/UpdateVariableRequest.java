@@ -19,6 +19,7 @@ public class UpdateVariableRequest {
     /**
      * 变量描述，如变量含义或变量的使用
      */
+    @NotBlank(message = "变量描述不能为空")
     private String variableDesc;
 
     /**
@@ -38,11 +39,6 @@ public class UpdateVariableRequest {
      */
     @NotBlank(message = "变量作者不能为空")
     private String author;
-
-    /**
-     * 调用变量获取地址时的入参，默认json
-     */
-    private String variableParam;
 
     /**
      * 需求名称，改变量是哪个需求提出的，以供后续查询
