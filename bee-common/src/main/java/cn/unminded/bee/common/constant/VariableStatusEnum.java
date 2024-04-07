@@ -13,7 +13,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public enum VariableStatusEnum {
 
-    FRESH(0, "新建"),
+    DEFAULT(0, "新建"),
     EDITING(1, "编辑中"),
     DRAFT(2, "草稿"),
     SUBMIT_REVIEW(3, "提交审核"),

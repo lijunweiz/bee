@@ -13,4 +13,6 @@ public interface DataSourceMapper {
     List<DataSourceEntity> list(QueryDataSourceCriteria criteria);
 
     Integer insert(DataSourceEntity entity);
+
+    Integer update(DataSourceEntity entity);
 }

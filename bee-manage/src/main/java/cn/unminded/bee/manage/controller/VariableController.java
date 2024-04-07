@@ -64,7 +64,7 @@ public class VariableController {
                 .setVariableDesc(request.getVariableDesc())
                 .setDataSourceType(request.getDataSourceType())
                 .setDataSourceName(request.getDataSourceName())
-                .setVariableStatus(VariableStatusEnum.FRESH.getStatus())
+                .setVariableStatus(VariableStatusEnum.DEFAULT.getStatus())
                 .setVariableVersion(BeeConstant.ZERO)
                 .setAuthor(request.getAuthor())
                 .setRequirementName(request.getRequirementName())

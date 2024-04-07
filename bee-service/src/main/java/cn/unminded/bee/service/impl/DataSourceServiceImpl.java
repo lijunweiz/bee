@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -37,5 +38,14 @@ public class DataSourceServiceImpl implements DataSourceService {
     @Override
     public boolean save(DataSourceEntity entity) {
         return dataSourceMapper.insert(entity) == 1;
+    }
+
+    @Override
+    public boolean updateStatus(Long dataSourceId, Integer status) {
+        DataSourceEntity entity = new DataSourceEntity()
+                .setDataSourceId(dataSourceId)
+                .setStatus(status)
+                .setUpdateTime(LocalDateTime.now());
+        return dataSourceMapper.update(entity) == 1;
     }
 }

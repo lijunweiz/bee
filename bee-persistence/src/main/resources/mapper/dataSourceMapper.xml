@@ -74,5 +74,13 @@
                 #{updateTime})
     </insert>
 
+    <update id="update">
+        update t_data_source
+            set status = #{status},
+                updateTime = #{updateTime}
+            where
+                dataSourceId = #{dataSourceId}
+    </update>
+
 
 </mapper>

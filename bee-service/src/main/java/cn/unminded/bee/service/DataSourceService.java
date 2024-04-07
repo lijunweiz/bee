@@ -12,4 +12,6 @@ public interface DataSourceService {
     List<DataSourceEntity> list(QueryDataSourceCriteria criteria);
 
     boolean save(DataSourceEntity entity);
+
+    boolean updateStatus(Long dataSourceId, Integer status);
 }
