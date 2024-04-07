@@ -6,7 +6,6 @@ import cn.unminded.bee.common.Result;
 import cn.unminded.bee.manage.dto.user.UserInfo;
 import cn.unminded.bee.manage.constant.ManageLoginEnum;
 import cn.unminded.bee.manage.constant.UserRoleEnum;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public Result userInfo(@RequestParam("token") String token) {
+    public Result userInfo() {
 
         UserInfo data = UserInfo.builder().name("admin").roles(Arrays.asList(UserRoleEnum.ADMIN.getRole())).build();
 
@@ -39,8 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public Result userLogout(@RequestHeader("X-Token") String token) {
-        log.info("X-Token: {}", token);
+    public Result userLogout() {
         return Result.ok();
     }
 

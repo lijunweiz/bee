@@ -40,7 +40,7 @@ public class LogConfig {
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = Objects.isNull(requestAttributes) ? null : requestAttributes.getRequest();
-        String req = LogHelper.appendUrl(request) + " " + objectMapper.writeValueAsString(this.filterArgs(joinPoint.getArgs()));
+        String req = LogHelper.appendUrl(request) + " 入参:" + objectMapper.writeValueAsString(this.filterArgs(joinPoint.getArgs()));
         log.info("request: {}", req);
         long start = System.currentTimeMillis();
         Object resp = joinPoint.proceed(joinPoint.getArgs());
