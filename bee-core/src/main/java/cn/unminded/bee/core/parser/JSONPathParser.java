@@ -12,8 +12,8 @@ public class JSONPathParser {
         throw new UnsupportedOperationException();
     }
 
-    public static <T> T parse(String json, String jsonPath) {
-        return JsonPath.read(json, jsonPath);
+    public static <T> T parse(Object json, String jsonPath, Predicate... filters) {
+        return JsonPath.read(json, jsonPath, filters);
     }
 
     public static <T> T parse(String json, String jsonPath, Predicate... filters) {
