@@ -38,6 +38,7 @@
         <fastjson.version>1.2.80</fastjson.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <pagehelper.version>1.4.2</pagehelper.version>
+        <jsonpath.version>2.9.0</jsonpath.version>
     </properties>
 
     <dependencyManagement>
@@ -183,6 +184,12 @@
                 <artifactId>spring-boot-starter-test</artifactId>
                 <version>${spring-boot.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.jayway.jsonpath/json-path -->
+            <dependency>
+                <groupId>com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>${jsonpath.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
