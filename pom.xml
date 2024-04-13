@@ -40,6 +40,7 @@
         <pagehelper.version>1.4.2</pagehelper.version>
         <jsonpath.version>2.9.0</jsonpath.version>
         <guava.version>33.1.0-jre</guava.version>
+        <baomidou.version>4.1.0</baomidou.version>
     </properties>
 
     <dependencyManagement>
@@ -197,6 +198,12 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.baomidou/dynamic-datasource-spring-boot-starter -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${baomidou.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
