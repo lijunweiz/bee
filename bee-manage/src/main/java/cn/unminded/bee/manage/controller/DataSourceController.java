@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author lijunwei
@@ -35,6 +37,14 @@ public class DataSourceController {
     public Result queryDataSourceType() {
         Map<String, Object> data = new HashMap<>();
         data.put("dataSourceTypeOptions", DataSourceTypeEnum.getDataSourceTypeNames());
+        return Result.ok(data);
+    }
+
+    @GetMapping("/names")
+    public Result queryDataSourceName() {
+        Map<String, Object> data = new HashMap<>();
+        List<String> dsNames = dataSourceService.list(new QueryDataSourceCriteria()).stream().map(DataSourceEntity::getDataSourceName).collect(Collectors.toList());
+        data.put("dataSourceNameOptions", dsNames);
         return Result.ok(data);
     }
 

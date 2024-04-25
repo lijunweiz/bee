@@ -1,13 +1,21 @@
 package cn.unminded.bee.common.filter;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
+/**
+ * 无效
+ */
+//@Order(Ordered.HIGHEST_PRECEDENCE)
+//@WebFilter
+//@Component
 public class CorsFilter implements Filter {
 
     @Override
@@ -23,7 +31,7 @@ public class CorsFilter implements Filter {
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Headers", "*");
         response.setContentType("application/json;charset=UTF-8");
-        chain.doFilter(req, res);
+        chain.doFilter(request, response);
     }
 
     @Override
