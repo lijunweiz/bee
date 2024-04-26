@@ -25,7 +25,7 @@ public class DefendersFilter implements Filter {
 
         String uri = req.getRequestURI();
 
-        if (uri.startsWith("/manage")) {
+        if (uri.startsWith("/manage") || uri.startsWith("/favicon.ico")) {
             chain.doFilter(request, response);
         } else {
             String url = LogHelper.appendUrl(req);
