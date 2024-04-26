@@ -10,6 +10,8 @@ spring:
       validationQuery: select 1
       min-idle: 1
       max-active: 5
+      keep-alive: true
+      phy-timeout-millis: 8640000
 mybatis:
   configuration:
     cache-enabled: true
