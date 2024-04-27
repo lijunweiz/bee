@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface VariableMapper {
 
+    Integer connectKeepAlive();
+
     List<VariableEntity> list(QueryVariableCriteria criteria);
 
     List<VariableEntity> list(@Param("startTime") String startTime, @Param("endTime") String endTime, @Param("pageSize") Integer pageSize, @Param("asc") boolean ascending);

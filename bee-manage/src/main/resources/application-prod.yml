@@ -4,14 +4,13 @@ spring:
     druid:
       db-type: MySQL
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/bee?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+      url: jdbc:mysql://localhost:3306/bee?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai&autoReconnect=true
       username: root
       password: 123456
       validationQuery: select 1
       min-idle: 1
       max-active: 5
       keep-alive: true
-      phy-timeout-millis: 8640000
 mybatis:
   configuration:
     cache-enabled: true
