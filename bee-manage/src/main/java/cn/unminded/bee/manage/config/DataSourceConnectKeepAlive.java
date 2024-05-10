@@ -21,7 +21,7 @@ public class DataSourceConnectKeepAlive {
     @Resource
     private VariableMapper variableMapper;
 
-    @Scheduled(initialDelay = 10000, fixedDelay = 5000)
+    @Scheduled(fixedDelay = 5000)
     public void connectKeepAlive() {
         variableMapper.connectKeepAlive();
     }
