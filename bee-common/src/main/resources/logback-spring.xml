@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="600 seconds" debug="false">
+	<contextName>bee</contextName>
+	<springProperty scope="context" name="springAppName" source="spring.application.name"/>
+	<springProperty scope="context" name="currentEnv" source="spring.profiles.active"/>
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+	<property name="APP_NAME" value="${springAppName}"/>
+	<property name="LOG_HOME" value="./logs/${APP_NAME}"/>
+
+	<!-- 控制台输出 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<!--<pattern>%d{yyyy-MM-dd HH:mm:ss:SSS} %-5p [%15.-15thread] %-36.36c : %m%n</pattern>-->
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 按照每天生成日志文件 -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_HOME}/${APP_NAME}.log</file>
+		<!-- 定义日志滚动的策略 -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_HOME}/${APP_NAME}.%d{yyyy-MM-dd.HH}.log.gz</fileNamePattern>
+			<maxHistory>20</maxHistory>
+			<totalSizeCap>2GB</totalSizeCap>
+			<cleanHistoryOnStart>true</cleanHistoryOnStart>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>50MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<!--<pattern>%d{yyyy-MM-dd HH:mm:ss:SSS} %-5p [${APP_NAME}] [%thread] %c{0} %m%n</pattern>-->
+			<pattern>${FILE_LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.springframework.boot.autoconfigure" value="WARN" additivity="false"/>
+
+	<!-- 本地、开发环境 -->
+	<springProfile name="dev">
+		<root level="INFO">
+			<appender-ref ref="CONSOLE" />
+		</root>
+	</springProfile>
+
+	<!-- 线上环境 -->
+	<springProfile name="prod">
+		<root level="INFO">
+			<appender-ref ref="FILE"/>
+		</root>
+	</springProfile>
+
+</configuration>
