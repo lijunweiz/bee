@@ -1,6 +1,7 @@
 package cn.unminded.bee.manage.controller;
 
 import cn.unminded.bee.common.Result;
+import cn.unminded.bee.common.annotation.Log;
 import cn.unminded.bee.common.constant.DataSourceStatusEnum;
 import cn.unminded.bee.common.constant.DataSourceTypeEnum;
 import cn.unminded.bee.common.util.BindingResultUtil;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 /**
  * @author lijunwei
  */
+@Log("数据源配置")
 @Slf4j
 @RequestMapping("/manage/datasource")
 @RestController

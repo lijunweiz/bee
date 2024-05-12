@@ -1,6 +1,7 @@
 package cn.unminded.bee.manage.controller;
 
 
+import cn.unminded.bee.common.annotation.Log;
 import cn.unminded.bee.common.util.IdGenerator;
 import cn.unminded.bee.common.Result;
 import cn.unminded.bee.manage.dto.user.UserInfo;
@@ -17,6 +18,7 @@ import java.util.Map;
  *
  * @author lijunwei
  */
+@Log("用户信息")
 @Slf4j
 @RequestMapping("/manage/user")
 @RestController

@@ -1,6 +1,7 @@
 package cn.unminded.bee.manage.controller;
 
 import cn.unminded.bee.common.Result;
+import cn.unminded.bee.common.annotation.Log;
 import cn.unminded.bee.common.constant.BeeConstant;
 import cn.unminded.bee.common.constant.VariableStatusEnum;
 import cn.unminded.bee.common.util.BindingResultUtil;
@@ -25,6 +26,7 @@ import java.util.Objects;
  * 变量管理
  * @author lijunwei
  */
+@Log("变量管理")
 @Slf4j
 @RequestMapping("/manage/variable")
 @RestController
