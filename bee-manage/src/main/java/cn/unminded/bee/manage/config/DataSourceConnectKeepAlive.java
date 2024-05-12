@@ -1,11 +1,19 @@
 package cn.unminded.bee.manage.config;
 
+import cn.hutool.core.thread.NamedThreadFactory;
 import cn.unminded.bee.persistence.mapper.VariableMapper;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.core.env.Environment;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The last packet sent successfully to the server was 32,241 milliseconds ago. is longer than the server configured
@@ -14,16 +22,27 @@ import javax.annotation.Resource;
  * property 'autoReconnect=true' to avoid this problem
  * @author lijunwei
  */
-@EnableScheduling
 @Configuration
 public class DataSourceConnectKeepAlive {
 
     @Resource
+    private Environment environment;
+
+    @Resource
     private VariableMapper variableMapper;
 
-    @Scheduled(fixedDelay = 5000)
+    @Value("${bee.db.keepAliveProfile:}")
+    private String keepAliveProfile;
+
+    @PostConstruct
     public void connectKeepAlive() {
-        variableMapper.connectKeepAlive();
+        String[] activeProfiles = environment.getActiveProfiles();
+        if (StringUtils.isNotBlank(keepAliveProfile)
+                && ArrayUtils.isNotEmpty(activeProfiles)
+                && Arrays.stream(activeProfiles).anyMatch(x -> x.equals(keepAliveProfile))) {
+            ScheduledExecutorService keepAliveScheduler = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("keepAlive", true));
+            keepAliveScheduler.scheduleWithFixedDelay(() -> variableMapper.connectKeepAlive(), 1, 5, TimeUnit.SECONDS);
+        }
     }
 
 }

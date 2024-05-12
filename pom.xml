@@ -41,6 +41,7 @@
         <jsonpath.version>2.9.0</jsonpath.version>
         <guava.version>33.1.0-jre</guava.version>
         <baomidou.version>4.1.0</baomidou.version>
+        <hutool.version>5.8.27</hutool.version>
     </properties>
 
     <dependencyManagement>
@@ -204,6 +205,12 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
                 <version>${baomidou.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
