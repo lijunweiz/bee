@@ -1,11 +1,18 @@
 package cn.unminded.bee.common;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
+
+import java.time.LocalDateTime;
+
 public class Result {
 
     public static final Integer OK = 1;
     public static final Integer FAIL = 0;
     public static final String OK_MSG = "处理成功";
     public static final String FAIL_MSG = "处理失败";
+
+    private String timestamp;
 
     private Integer code;
 
@@ -14,12 +21,23 @@ public class Result {
     private Object data;
 
     public Result() {
+        this.timestamp = DateUtil.format(LocalDateTime.now(), DatePattern.NORM_DATETIME_MS_PATTERN);
     }
 
     public Result(Integer code, String desc, Object data) {
         this.code = code;
         this.desc = desc;
+        this.timestamp = DateUtil.format(LocalDateTime.now(), DatePattern.NORM_DATETIME_MS_PATTERN);
         this.data = data;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public Result setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+        return this;
     }
 
     public Integer getCode() {
@@ -52,7 +70,8 @@ public class Result {
     @Override
     public String toString() {
         return "Result{" +
-                "code=" + code +
+                "timestamp='" + timestamp + '\'' +
+                ", code=" + code +
                 ", desc='" + desc + '\'' +
                 ", data=" + data +
                 '}';

@@ -25,6 +25,7 @@ public class WebConfig {
             LocalDateTimeSerializer serializer = new LocalDateTimeSerializer(formatter);
             jacksonObjectMapperBuilder.serializerByType(LocalDateTime.class, serializer);
             jacksonObjectMapperBuilder.deserializerByType(LocalDateTime.class, deserializer);
+
         };
     }
 
