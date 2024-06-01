@@ -1,9 +1,7 @@
 package cn.unminded.bee.common;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
-
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Result {
 
@@ -11,6 +9,7 @@ public class Result {
     public static final Integer FAIL = 0;
     public static final String OK_MSG = "处理成功";
     public static final String FAIL_MSG = "处理失败";
+    private static final String YYYY_MM_DD_HH_MM_SS_SSS = "yyyy-MM-dd HH:mm:ss.SSS";
 
     private String timestamp;
 
@@ -21,13 +20,13 @@ public class Result {
     private Object data;
 
     public Result() {
-        this.timestamp = DateUtil.format(LocalDateTime.now(), DatePattern.NORM_DATETIME_MS_PATTERN);
+        this.timestamp = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_SSS).format(new Date());
     }
 
     public Result(Integer code, String desc, Object data) {
         this.code = code;
         this.desc = desc;
-        this.timestamp = DateUtil.format(LocalDateTime.now(), DatePattern.NORM_DATETIME_MS_PATTERN);
+        this.timestamp = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_SSS).format(new Date());
         this.data = data;
     }
 
