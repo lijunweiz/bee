@@ -2,7 +2,7 @@ package cn.unminded.bee.manage.dto.datasource.request;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author lijunwei
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class ModifyDataSourceRequest {
 
-    @NotBlank(message = "数据源id不能为空")
+    @NotNull(message = "数据源id不能为空")
     private Long dataSourceId;
 
     /**

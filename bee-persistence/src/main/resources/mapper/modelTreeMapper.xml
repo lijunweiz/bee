@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unminded.bee.persistence.mapper.ModelTreeMapper">
+
+    <select id="list" resultType="ModelTreeEntity">
+        select modelId,
+            modelType,
+            modelName,
+            `isLeaf`,
+            `desc`,
+            status,
+            operator,
+            createdTime,
+            updateTime
+        from t_model_tree
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="modelId != null">
+                and modelId = #{modelId}
+            </if>
+            <if test="modelType != null and modelType != ''">
+                and modelType = #{modelType}
+            </if>
+            <if test="modelName != null and modelName != ''">
+                and modelName = #{modelName}
+            </if>
+            <if test="isLeaf != null">
+                and isLeaf = #{isLeaf}
+            </if>
+        </trim>
+        order by createdTime asc
+    </select>
+
+    <insert id="insert" parameterType="ModelTreeEntity" useGeneratedKeys="true" keyProperty="modelId">
+        insert into
+            t_model_tree (`modelType`,
+                               `modelName`,
+                                `isLeaf`,
+                                `desc`,
+                                `status`,
+                               `operator`,
+                               `createdTime`,
+                               `updateTime`)
+        values (#{modelType},
+                #{modelName},
+                #{isLeaf},
+                #{desc},
+                #{status},
+                #{operator},
+                #{createdTime},
+                #{updateTime})
+    </insert>
+
+    <update id="update">
+        update t_model_tree
+            set status = #{status},
+                updateTime = #{updateTime}
+            where
+                modelId = #{modelId}
+    </update>
+
+
+</mapper>

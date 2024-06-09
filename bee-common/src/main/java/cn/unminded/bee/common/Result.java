@@ -5,8 +5,8 @@ import java.util.Date;
 
 public class Result {
 
-    public static final Integer OK = 1;
-    public static final Integer FAIL = 0;
+    public static final Integer OK_INT = 1;
+    public static final Integer FAIL_INT = 0;
     public static final String OK_MSG = "处理成功";
     public static final String FAIL_MSG = "处理失败";
     private static final String YYYY_MM_DD_HH_MM_SS_SSS = "yyyy-MM-dd HH:mm:ss.SSS";
@@ -77,7 +77,7 @@ public class Result {
     }
 
     public static Result ok() {
-        return new Result(OK, OK_MSG, null);
+        return new Result(OK_INT, OK_MSG, null);
     }
 
     public static Result ok(Integer code) {
@@ -85,11 +85,11 @@ public class Result {
     }
 
     public static Result ok(String desc) {
-        return new Result(OK, desc, null);
+        return new Result(OK_INT, desc, null);
     }
 
     public static Result ok(Object data) {
-        return new Result(OK, OK_MSG, data);
+        return new Result(OK_INT, OK_MSG, data);
     }
 
     public static Result ok(Integer code, String desc) {
@@ -101,7 +101,7 @@ public class Result {
     }
 
     public static Result fail() {
-        return new Result(FAIL, FAIL_MSG, null);
+        return new Result(FAIL_INT, FAIL_MSG, null);
     }
 
     public static Result fail(Integer code) {
@@ -109,11 +109,11 @@ public class Result {
     }
 
     public static Result fail(String desc) {
-        return new Result(FAIL, desc, null);
+        return new Result(FAIL_INT, desc, null);
     }
 
     public static Result fail(Object data) {
-        return new Result(FAIL, FAIL_MSG, data);
+        return new Result(FAIL_INT, FAIL_MSG, data);
     }
 
     public static Result fail(Integer code, String desc) {
