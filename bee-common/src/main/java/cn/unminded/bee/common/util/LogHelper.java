@@ -35,10 +35,6 @@ public class LogHelper {
     }
 
     public static String logBody(HttpServletRequest request) {
-        if (Objects.isNull(request.getContentType()) || !request.getContentType().contains("json")) {
-            return StringUtils.EMPTY;
-        }
-
         try {
             return IOUtils.readString(request.getInputStream());
         } catch (IOException e) {
@@ -46,6 +42,14 @@ public class LogHelper {
         }
 
         return StringUtils.EMPTY;
+    }
+
+    public static String logJsonBody(HttpServletRequest request) {
+        if (Objects.isNull(request.getContentType()) || !request.getContentType().contains("json")) {
+            throw new IllegalArgumentException("不能识别的数据格式: " + request.getContentType());
+        }
+
+        return logBody(request);
     }
 
 }
