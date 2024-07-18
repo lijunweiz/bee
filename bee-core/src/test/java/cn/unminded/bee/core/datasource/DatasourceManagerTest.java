@@ -16,11 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class DatasourceManagerTest {
 
-    DatabaseDataSource databaseDataSource = new DatabaseDataSource();
+    DatasourceManager datasourceManager = new DatasourceManager();
 
     @BeforeEach
     void setUp() throws SQLException {
-        DatasourceManager datasourceManager = new DatasourceManager();
         DruidDataSource beeDatasource = new DruidDataSource(false);
         beeDatasource.setUrl("jdbc:mysql://localhost:3306/bee?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai");
         beeDatasource.setUsername("root");
@@ -29,10 +28,11 @@ class DatasourceManagerTest {
         beeDatasource.setProxyFilters(Lists.newArrayList(new Slf4jLogFilter()));
         beeDatasource.init();
 
+        DatabaseDataSource databaseDataSource = new DatabaseDataSource();
         Map<String, DruidDataSource> dataSource = Maps.newHashMap();
         dataSource.put("bee", beeDatasource);
-        datasourceManager.setDatabaseDataSource(dataSource);
-        databaseDataSource.setDatasourceManager(datasourceManager);
+        databaseDataSource.setDataSource(dataSource);
+        datasourceManager.setDatabaseDataSource(databaseDataSource);
     }
 
     @Test
@@ -44,10 +44,10 @@ class DatasourceManagerTest {
         args.put("list", Lists.newArrayList("10000000", "10000001", "10000002", "10000003"));
 
         DatabaseInput input = new DatabaseInput().setDbType("mysql").setDbName("bee").setSql(sql).setArgs(args);
-        Map<String, Object> map = databaseDataSource.execute(input);
+        Map<String, Object> map = datasourceManager.getMap(input);
         System.err.println(JSON.toJSON(map));
 
-        map = databaseDataSource.execute(input);
+        map = datasourceManager.getMap(input);
         System.err.println(JSON.toJSON(map));
         assertFalse(map.isEmpty());
     }
