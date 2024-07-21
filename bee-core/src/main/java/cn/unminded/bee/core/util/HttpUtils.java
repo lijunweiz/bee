@@ -145,19 +145,13 @@ public class HttpUtils {
         if (Objects.isNull(httpUrl)) {
             throw new IllegalArgumentException("url: " + url + ", 格式异常");
         }
+        HttpUrl.Builder httpUrlBuilder = httpUrl.newBuilder();
         if (Objects.nonNull(param) && !param.isEmpty()) {
-            StringBuilder sb = new StringBuilder(url);
-            if (Objects.isNull(httpUrl.query())) {
-                sb.append("?");
-            }
-            if (StringUtils.length(httpUrl.query()) > 0) {
-                sb.append("&");
-            }
-            param.forEach((k, v) -> sb.append(k).append("=").append(v).append("&"));
-            url = sb.substring(0, sb.length() - 1);
+            param.forEach(httpUrlBuilder::addQueryParameter);
         }
+
         // 处理请求头
-        Request.Builder requestBuilder = new Request.Builder().url(url);
+        Request.Builder requestBuilder = new Request.Builder().url(httpUrlBuilder.build());
         if (Objects.nonNull(headers) && !headers.isEmpty()) {
             headers.forEach(requestBuilder::header);
         }
