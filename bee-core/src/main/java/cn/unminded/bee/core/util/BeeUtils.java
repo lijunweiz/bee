@@ -1,9 +1,11 @@
 package cn.unminded.bee.core.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.util.Objects;
+import java.util.Properties;
 
 /**
  * @author lijunwei
@@ -12,6 +14,16 @@ public class BeeUtils {
 
     private BeeUtils() {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * 通过类名创建一个新的实例
+     * @param clazzName class名称
+     * @return 一个实例
+     */
+    public static Object newInstance(String clazzName) throws ClassNotFoundException {
+        Objects.requireNonNull(clazzName, "clazzName can not be null");
+        return newInstance(Class.forName(clazzName));
     }
 
     /**
@@ -45,6 +57,23 @@ public class BeeUtils {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             return null;
         }
+    }
+
+    /**
+     * 读取配置
+     * @return
+     */
+    public static synchronized Properties readProperties() {
+        Properties properties = new Properties();
+        try (InputStream inputStream = BeeUtils.class.getClassLoader().getResourceAsStream("bee.properties")) {
+            if (Objects.nonNull(inputStream)) {
+                properties.load(inputStream);
+            }
+        } catch (IOException ignored) {
+
+        }
+
+        return properties;
     }
 
 }

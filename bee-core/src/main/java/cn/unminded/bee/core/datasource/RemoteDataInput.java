@@ -1,6 +1,7 @@
 package cn.unminded.bee.core.datasource;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author lijunwei
@@ -82,6 +83,20 @@ public class RemoteDataInput {
     public RemoteDataInput setBody(Object body) {
         this.body = body;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RemoteDataInput that = (RemoteDataInput) o;
+        return datasourceName.equals(that.datasourceName)
+                && datasourceType.equals(that.datasourceType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(datasourceName, datasourceType);
     }
 
     @Override

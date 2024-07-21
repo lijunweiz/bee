@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * 从数据库中获取变量
+ * 数据源管理器，从各个数据源获取变量
  * @author lijunwei
  */
 public class DatasourceManager {
