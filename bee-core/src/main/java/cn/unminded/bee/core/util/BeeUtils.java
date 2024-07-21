@@ -32,7 +32,7 @@ public class BeeUtils {
      * @param <T> class类型
      * @return 一个实例
      */
-    public static <T> Object newInstance(Class<T> clazz) {
+    public static <T> T newInstance(Class<T> clazz) {
         Objects.requireNonNull(clazz, "clazz can not be null");
         try {
             return clazz.getDeclaredConstructor().newInstance();
