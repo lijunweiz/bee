@@ -7,6 +7,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class BeeConstant {
 
+    private BeeConstant() {
+        throw new UnsupportedOperationException();
+    }
+
     public static final String GET = "GET";
 
     public static final String POST = "POST";

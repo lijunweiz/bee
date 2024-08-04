@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
 import java.io.IOException;
@@ -18,6 +20,8 @@ import java.util.concurrent.TimeUnit;
  * @author lijunwei
  */
 public class HttpUtils {
+
+    private static final Logger logger = LoggerFactory.getLogger(HttpUtils.class);
 
     private HttpUtils() {
         throw new UnsupportedOperationException();
@@ -48,8 +52,7 @@ public class HttpUtils {
                         builder.addInterceptor((Interceptor) BeeUtils.newInstance(interceptor));
                     }
                 } catch (ClassNotFoundException e) {
-                    System.err.println("未发现class: " + interceptor);
-                    System.exit(-1);
+                    logger.warn("未找到class: {}, 忽略实例化异常", interceptor);
                 }
             }
         }
