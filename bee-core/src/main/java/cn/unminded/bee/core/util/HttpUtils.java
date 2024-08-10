@@ -142,6 +142,10 @@ public class HttpUtils {
         return JSON.parseObject(Objects.nonNull(response.body()) ? response.body().string() : null, clazz);
     }
 
+    public static Response httpResponse(String method, String url, Map<String, String> param, Map<String, String> headers, Object body) throws IOException {
+        return invoke(method, url, param, headers, body);
+    }
+
     private static Response invoke(String method, String url, Map<String, String> param, Map<String, String> headers, Object body) throws IOException {
         // 处理查询参数
         HttpUrl httpUrl = HttpUrl.parse(url);
