@@ -37,7 +37,7 @@
             <if test="ascending != null and !ascending">
                 order by updateTime desc
             </if>
-            <if test="!((startIndex != null and startIndex >= 0) and (endIndex != null and endIndex > 0))">
+            <if test="!((start != null and start >= 0) and (end != null and end > 0))">
                 limit 20
             </if>
         </trim>

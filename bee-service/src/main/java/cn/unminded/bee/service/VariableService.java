@@ -14,6 +14,8 @@ public interface VariableService {
 
     List<VariableEntity> list(String startTime, String endTime, Integer pageSize, boolean asc);
 
+    Long count(QueryVariableCriteria criteria);
+
     VariableEntity findOne(String variableNameEn);
 
     VariableEntity findLastOne(String variableNameEn);

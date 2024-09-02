@@ -17,6 +17,8 @@ public interface VariableMapper {
 
     List<VariableEntity> list(@Param("startTime") String startTime, @Param("endTime") String endTime, @Param("pageSize") Integer pageSize, @Param("asc") boolean ascending);
 
+    Long count(QueryVariableCriteria criteria);
+
     VariableEntity findLastOne(@Param("variableNameEn") String variableNameEn);
 
     VariableEntity findOneById(@Param("variableId") Integer variableId);

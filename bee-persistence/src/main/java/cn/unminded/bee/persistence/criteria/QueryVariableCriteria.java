@@ -1,5 +1,6 @@
 package cn.unminded.bee.persistence.criteria;
 
+import cn.unminded.bee.common.constant.BeeConstant;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -18,11 +19,11 @@ public class QueryVariableCriteria {
 
     private boolean ascending = false;
 
-    private Integer startIndex;
+    private Integer start;
 
-    private Integer endIndex;
+    private Integer limit;
 
-    private String startTime;
+    private String startTime = BeeConstant.BEE_START_TIME;
 
     private String endTime;
 

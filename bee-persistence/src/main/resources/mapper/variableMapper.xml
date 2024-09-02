@@ -6,21 +6,11 @@
         select count(*) from dual
     </select>
 
-    <select id="list" resultType="VariableEntity">
-        select variableId,
-            variableNameEn,
-            variableNameZh,
-            variableDesc,
-            dataSourceName,
-            dataSourceType,
-            variableStatus,
-            variableVersion,
-            author,
-            requirementName,
-            createdTime,
-            updateTime
-        from t_variable
+    <sql id="criteria">
         <trim prefix="where" prefixOverrides="and | or">
+            <if test="true">
+                and variableStatus != 4
+            </if>
             <if test="variableNameEn != null and variableNameEn != ''">
                 and variableNameEn = #{variableNameEn}
             </if>
@@ -36,19 +26,40 @@
             <if test="endTime != null">
                 and updateTime &lt; #{endTime}
             </if>
-            <if test="ascending != null and ascending">
-                order by updateTime asc
-            </if>
-            <if test="ascending != null and !ascending">
-                order by updateTime desc
-            </if>
-            <if test="(startIndex != null and startIndex >= 0) and (endIndex != null and endIndex > 0)">
-                limit #{startIndex}, #{endIndex}
-            </if>
-            <if test="!((startIndex != null and startIndex >= 0) and (endIndex != null and endIndex > 0))">
-                limit 20
-            </if>
         </trim>
+    </sql>
+
+    <select id="count" resultType="Long">
+        select count(1) from t_variable <include refid="criteria"/>
+    </select>
+
+    <select id="list" resultType="VariableEntity">
+        select variableId,
+            variableNameEn,
+            variableNameZh,
+            variableDesc,
+            dataSourceName,
+            dataSourceType,
+            variableStatus,
+            variableVersion,
+            author,
+            requirementName,
+            createdTime,
+            updateTime
+        from t_variable
+        <include refid="criteria"/>
+        <if test="ascending != null and ascending">
+            order by updateTime asc
+        </if>
+        <if test="ascending != null and !ascending">
+            order by updateTime desc
+        </if>
+        <if test="(start != null and start >= 0) and (limit != null and limit > 0)">
+            limit #{start}, #{limit}
+        </if>
+        <if test="!((start != null and start >= 0) and (limit != null and limit > 0))">
+            limit 10
+        </if>
 
     </select>
 

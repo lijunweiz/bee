@@ -51,6 +51,11 @@ public class VariableServiceImpl implements VariableService {
     }
 
     @Override
+    public Long count(QueryVariableCriteria criteria) {
+        return variableMapper.count(criteria);
+    }
+
+    @Override
     public VariableEntity findOne(String variableNameEn) {
         return variableMapper.findLastOne(variableNameEn);
     }

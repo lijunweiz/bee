@@ -16,9 +16,9 @@ public class QueryDataSourceCriteria {
 
     private boolean ascending = false;
 
-    private Integer startIndex;
+    private Integer start;
 
-    private Integer endIndex;
+    private Integer limit;
 
     private String startTime;
 

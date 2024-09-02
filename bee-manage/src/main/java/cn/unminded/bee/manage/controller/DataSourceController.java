@@ -43,17 +43,23 @@ public class DataSourceController {
     }
 
     @GetMapping("/names")
-    public Result queryDataSourceName() {
+    public Result queryDataSourceName(@RequestParam(value = "dataSourceType", required = false) String dataSourceType) {
         Map<String, Object> data = new HashMap<>();
-        List<String> dsNames = dataSourceService.list(new QueryDataSourceCriteria()).stream().map(DataSourceEntity::getDataSourceName).collect(Collectors.toList());
+        QueryDataSourceCriteria criteria = new QueryDataSourceCriteria().setDataSourceType(dataSourceType);
+        List<String> dsNames = dataSourceService.list(criteria)
+                .stream()
+                .map(DataSourceEntity::getDataSourceName)
+                .collect(Collectors.toList());
         data.put("dataSourceNameOptions", dsNames);
         return Result.ok(data);
     }
 
     @GetMapping("/list")
-    public Result query(@RequestParam(value = "dataSourceName", required = false) String dataSourceName) {
+    public Result query(@RequestParam(value = "dataSourceType", required = false) String dataSourceType,
+                        @RequestParam(value = "dataSourceName", required = false) String dataSourceName) {
         Map<String, Object> data = new HashMap<>();
         QueryDataSourceCriteria criteria = new QueryDataSourceCriteria()
+                .setDataSourceType(dataSourceType)
                 .setDataSourceName(dataSourceName);
         data.put("list", dataSourceService.list(criteria));
         return Result.ok(data);

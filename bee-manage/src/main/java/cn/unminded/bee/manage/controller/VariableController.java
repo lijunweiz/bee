@@ -6,11 +6,14 @@ import cn.unminded.bee.common.constant.BeeConstant;
 import cn.unminded.bee.common.constant.VariableStatusEnum;
 import cn.unminded.bee.common.util.BindingResultUtil;
 import cn.unminded.bee.manage.dto.variable.request.AddVariableRequest;
+import cn.unminded.bee.manage.dto.variable.request.ModifyVariableStatusRequest;
 import cn.unminded.bee.manage.dto.variable.request.UpdateVariableRequest;
 import cn.unminded.bee.persistence.criteria.QueryVariableCriteria;
 import cn.unminded.bee.persistence.entity.VariableEntity;
 import cn.unminded.bee.service.VariableService;
+import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,15 +41,19 @@ public class VariableController {
     @GetMapping("/list")
     public Result queryList(@RequestParam(value = "variableNameEn", required = false) String variableNameEn,
                             @RequestParam(value = "dataSourceName", required = false) String dataSourceName,
-                            @RequestParam(value = "dataSourceType", required = false) String dataSourceType) {
+                            @RequestParam(value = "dataSourceType", required = false) String dataSourceType,
+                            @RequestParam(value = "page", defaultValue = "1") Integer page,
+                            @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
         QueryVariableCriteria criteria = new QueryVariableCriteria()
                 .setVariableNameEn(variableNameEn)
                 .setDataSourceName(dataSourceName)
-                .setDataSourceType(dataSourceType);
+                .setDataSourceType(dataSourceType)
+                .setStart(Objects.equals(page, 1) ? 0 : (page - 1) * limit)
+                .setLimit(limit);
         List<VariableEntity> list = variableService.list(criteria);
         Map<String, Object> data = new HashMap<>();
         data.put("items", list);
-        data.put("total", list.size());
+        data.put("total", variableService.count(criteria));
         return Result.ok(data);
     }
 
@@ -89,12 +96,23 @@ public class VariableController {
         VariableEntity entity = new VariableEntity()
                 .setVariableNameEn(request.getVariableNameEn())
                 .setVariableDesc(request.getVariableDesc())
-                .setDataSourceType(request.getDataSourceType())
+                .setDataSourceType(Strings.nullToEmpty(request.getDataSourceType()))
                 .setDataSourceName(request.getDataSourceName())
                 .setVariableStatus(request.getVariableStatus())
                 .setVariableVersion(request.getVariableVersion())
                 .setAuthor(request.getAuthor())
                 .setRequirementName(request.getRequirementName())
+                .setUpdateTime(LocalDateTime.now());
+        boolean update = variableService.update(entity);
+        return update ? Result.ok() : Result.fail();
+    }
+
+    @PostMapping("/modifyStatus")
+    public Result modifyStatus(@Validated @RequestBody ModifyVariableStatusRequest request) {
+        VariableEntity entity = new VariableEntity()
+                .setVariableNameEn(request.getVariableNameEn())
+                .setAuthor(request.getAuthor())
+                .setVariableStatus(request.getVariableStatus())
                 .setUpdateTime(LocalDateTime.now());
         boolean update = variableService.update(entity);
         return update ? Result.ok() : Result.fail();
