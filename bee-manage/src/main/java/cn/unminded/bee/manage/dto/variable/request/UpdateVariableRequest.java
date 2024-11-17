@@ -1,5 +1,6 @@
 package cn.unminded.bee.manage.dto.variable.request;
 
+import cn.unminded.bee.common.annotation.VariableStatus;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -45,6 +46,7 @@ public class UpdateVariableRequest {
      */
     private String requirementName;
 
+    @VariableStatus
     private Integer variableStatus;
 
     private Integer variableVersion;

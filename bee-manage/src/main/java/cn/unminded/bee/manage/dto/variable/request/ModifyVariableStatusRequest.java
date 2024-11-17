@@ -1,5 +1,6 @@
 package cn.unminded.bee.manage.dto.variable.request;
 
+import cn.unminded.bee.common.annotation.VariableStatus;
 import cn.unminded.bee.common.constant.VariableStatusEnum;
 import lombok.Data;
 
@@ -26,6 +27,7 @@ public class ModifyVariableStatusRequest {
     /**
      * {@link VariableStatusEnum#getStatus()}
      */
+    @VariableStatus
     private Integer variableStatus;
 
 }

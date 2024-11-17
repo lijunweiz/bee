@@ -13,7 +13,6 @@ import cn.unminded.bee.persistence.entity.VariableEntity;
 import cn.unminded.bee.service.VariableService;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
