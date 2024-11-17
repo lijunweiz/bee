@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author lijunwei
@@ -32,7 +33,10 @@ public class DefendersFilter implements Filter {
 
         String uri = req.getRequestURI();
 
-        if (uri.startsWith("/manage") || uri.startsWith("/favicon.ico") || this.isIpWhitelist(IPHelper.getRemoteIP(req))) {
+        if (Objects.equals(uri, "/")
+                || uri.startsWith("/manage")
+                || uri.startsWith("/favicon.ico")
+                || this.isIpWhitelist(IPHelper.getRemoteIP(req))) {
             chain.doFilter(request, response);
         } else {
             String url = LogHelper.appendUrl(req);
