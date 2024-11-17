@@ -28,6 +28,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
+ * 控制器日志日志记录组件
  * @author lijunwei
  */
 @Aspect
@@ -39,8 +40,13 @@ public class LogConfig {
     @Resource
     private ObjectMapper objectMapper;
 
-    @Around("@within(org.springframework.web.bind.annotation.RestController)" +
-            "||@within(org.springframework.stereotype.Controller)")
+    /**
+     * 对所有使用注解{@link org.springframework.web.bind.annotation.RestController}的class记录日志
+     * @param joinPoint 切入点
+     * @return 接入点的执行结果
+     * @throws Throwable 切入点执行的异常
+     */
+    @Around("@within(org.springframework.web.bind.annotation.RestController)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         Log logAnnotation = getLog(joinPoint.getSignature(), joinPoint.getTarget());
         if (Objects.isNull(logAnnotation)) {
@@ -64,6 +70,12 @@ public class LogConfig {
         return resp;
     }
 
+    /**
+     * 获取自定义{@link Log}
+     * @param signature 切入点签名
+     * @param obj 切入的对象
+     * @return 返回Log注解
+     */
     private Log getLog(Signature signature, Object obj) {
         if (signature instanceof MethodSignature) {
             MethodSignature methodSignature = (MethodSignature) signature;
@@ -77,21 +89,11 @@ public class LogConfig {
         return obj.getClass().getAnnotation(Log.class);
     }
 
-
     /**
-     * @Pointcut("execution(public * cn.unminded.bee.*.controller..*.*(..))") controller切入
-     * @Pointcut("@annotation(cn.unminded.bee.common.annotation.Log)") 方法切入
+     * 过滤不要用的参数类型
+     * @param objects 参数对象列表
+     * @return 过滤后的结果参数
      */
-//    @Pointcut("execution(public * cn.unminded.bee.*.controller..*.*(..))")
-//    public void log() {
-//
-//    }
-
-//    @Around("log()")
-//    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-//
-//    }
-
     private List<Object> filterArgs(Object[] objects) {
         if (ArrayUtils.isEmpty(objects)) {
             return Collections.emptyList();
