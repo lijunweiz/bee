@@ -2,6 +2,7 @@ package cn.unminded.bee.common.filter;
 
 import cn.unminded.bee.common.util.IPHelper;
 import cn.unminded.bee.common.util.LogHelper;
+import cn.unminded.rtool.util.IOUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,8 +35,13 @@ public class DefendersFilter implements Filter {
 
         String uri = req.getRequestURI();
 
-        if (Objects.equals(uri, "/")
-                || uri.startsWith("/manage")
+        if (Objects.equals(uri.trim(), "/")) {
+            InputStream is = DefendersFilter.class.getClassLoader().getResourceAsStream("intro.html");
+            resp.setHeader("Content-Type", "text/html;charset=utf-8");
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.getWriter().write(IOUtils.readString(is));
+            logger.warn("获取系统简介IP: {}", IPHelper.getRemoteIP(req));
+        } else if (uri.startsWith("/manage")
                 || uri.startsWith("/favicon.ico")
                 || this.isIpWhitelist(IPHelper.getRemoteIP(req))) {
             chain.doFilter(request, response);
