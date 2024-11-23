@@ -10,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class AddDataSourceRequest {
 
+    private Long dataSourceId;
+
     /**
      * 数据源名称
      */
@@ -25,12 +27,12 @@ public class AddDataSourceRequest {
     /**
      * 数据源状态
      */
-    private Integer status;
+    private Integer dataSourceStatus;
 
     /**
      * 描述信息
      */
-    private String desc;
+    private String dataSourceDesc;
 
     /**
      * 通讯协议

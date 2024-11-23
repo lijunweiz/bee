@@ -26,5 +26,5 @@ public class ModifyDataSourceRequest {
     /**
      * 数据源状态
      */
-    private Integer status;
+    private Integer dataSourceStatus;
 }

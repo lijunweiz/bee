@@ -3,6 +3,7 @@ package cn.unminded.bee.persistence.mapper;
 import cn.unminded.bee.persistence.criteria.QueryVariableCriteria;
 import cn.unminded.bee.persistence.entity.VariableEntity;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -26,6 +27,9 @@ public interface VariableMapper {
     Integer insert(VariableEntity entity);
 
     Integer update(VariableEntity entity);
+
+    @Update("update t_variable set dataSourceName = #{dataSourceName}, dataSourceType = #{dataSourceType} where dataSourceId = #{dataSourceId}")
+    Integer updateDataSource(@Param("dataSourceId") Long dataSourceId, @Param("dataSourceName") String dataSourceName, @Param("dataSourceType") String dataSourceType);
 
 
 }

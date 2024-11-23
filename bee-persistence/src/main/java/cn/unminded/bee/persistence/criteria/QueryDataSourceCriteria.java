@@ -10,6 +10,8 @@ import lombok.experimental.Accessors;
 @Data
 public class QueryDataSourceCriteria {
 
+    private Long dataSourceId;
+
     private String dataSourceName;
 
     private String dataSourceType;

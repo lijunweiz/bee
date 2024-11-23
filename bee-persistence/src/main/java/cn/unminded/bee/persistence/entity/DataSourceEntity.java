@@ -28,12 +28,12 @@ public class DataSourceEntity {
     /**
      * 数据源状态
      */
-    private Integer status;
+    private Integer dataSourceStatus;
 
     /**
      * 描述信息
      */
-    private String desc;
+    private String dataSourceDesc;
 
     /**
      * 通讯协议

@@ -32,7 +32,7 @@ public class ModelTreeItemRequest {
      * 描述信息
      */
     @NotBlank(message = "描述信息不能为空")
-    private String desc;
+    private String modelDesc;
 
     /**
      * 操作员

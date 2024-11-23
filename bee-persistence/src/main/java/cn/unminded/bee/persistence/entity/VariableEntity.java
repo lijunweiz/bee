@@ -34,6 +34,11 @@ public class VariableEntity {
     private String variableDesc;
 
     /**
+     * 数据源id
+     */
+    private Long dataSourceId;
+
+    /**
      * 数据源名称
      */
     private String dataSourceName;

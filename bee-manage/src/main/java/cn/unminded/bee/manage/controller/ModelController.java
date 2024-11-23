@@ -67,7 +67,6 @@ public class ModelController {
         QueryModelCriteria itemCriteria = new QueryModelCriteria().setIsLeaf(ModelTreeNodeTypeEnum.YES.getCode());
         result.put("list", modelService.modelTreeData(itemCriteria));// 表格数据
 
-
         return Result.ok(result);
     }
 
@@ -90,8 +89,8 @@ public class ModelController {
                 .setModelType(request.getModelType())
                 .setModelName(request.getModelName())
                 .setIsLeaf(request.getIsLeaf())
-                .setDesc(request.getDesc())
-                .setStatus(ModelStatusEnum.CREATE.getCode())
+                .setModelDesc(request.getModelDesc())
+                .setModelStatus(ModelStatusEnum.CREATE.getCode())
                 .setOperator(request.getOperator())
                 .setCreatedTime(LocalDateTime.now())
                 .setUpdateTime(LocalDateTime.now());

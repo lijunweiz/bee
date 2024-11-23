@@ -34,12 +34,12 @@ public class ModelTreeEntity {
     /**
      * 描述信息
      */
-    private String desc;
+    private String modelDesc;
 
     /**
      * 启用状态，0-新建，1-启用，2-停用，3-废弃
      */
-    private Integer status;
+    private Integer modelStatus;
 
     /**
      * 操作员

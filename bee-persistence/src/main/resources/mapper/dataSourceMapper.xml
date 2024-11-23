@@ -6,8 +6,8 @@
         select dataSourceId,
             dataSourceName,
             dataSourceType,
-            `status`,
-            `desc`,
+            dataSourceStatus,
+            dataSourceDesc,
             protocol,
             method,
             address,
@@ -19,6 +19,9 @@
             updateTime
         from t_data_source
         <trim prefix="where" prefixOverrides="and | or">
+            <if test="dataSourceId != null">
+                and dataSourceId = #{dataSourceId}
+            </if>
             <if test="dataSourceName != null and dataSourceName != ''">
                 and dataSourceName = #{dataSourceName}
             </if>
@@ -48,8 +51,8 @@
         insert into
             t_data_source (`dataSourceName`,
                                `dataSourceType`,
-                               `status`,
-                               `desc`,
+                               `dataSourceStatus`,
+                               `dataSourceDesc`,
                                `protocol`,
                                `method`,
                                `address`,
@@ -61,8 +64,8 @@
                                `updateTime`)
         values (#{dataSourceName},
                 #{dataSourceType},
-                #{status},
-                #{desc},
+                #{dataSourceStatus},
+                #{dataSourceDesc},
                 #{protocol},
                 #{method},
                 #{address},
@@ -74,12 +77,46 @@
                 #{updateTime})
     </insert>
 
-    <update id="update">
-        update t_data_source
-            set status = #{status},
-                updateTime = #{updateTime}
-            where
-                dataSourceId = #{dataSourceId}
+    <update id="update" parameterType="cn.unminded.bee.persistence.entity.DataSourceEntity">
+        update t_data_source set
+        <if test="dataSourceName != null and dataSourceName != ''">
+            dataSourceName = #{dataSourceName},
+        </if>
+        <if test="dataSourceType != null and dataSourceType != ''">
+            dataSourceType = #{dataSourceType},
+        </if>
+        <if test="dataSourceStatus != null">
+            dataSourceStatus = #{dataSourceStatus},
+        </if>
+        <if test="dataSourceDesc != null and dataSourceDesc != ''">
+            dataSourceDesc = #{dataSourceDesc},
+        </if>
+        <if test="protocol != null">
+            protocol = #{protocol},
+        </if>
+        <if test="method != null">
+            method = #{method},
+        </if>
+        <if test="address != null">
+            address = #{address},
+        </if>
+        <if test="queryParam != null">
+            queryParam = #{queryParam},
+        </if>
+        <if test="headers != null">
+            headers = #{headers},
+        </if>
+        <if test="requestBody != null">
+            requestBody = #{requestBody},
+        </if>
+        <if test="extractVariable != null">
+            extractVariable = #{extractVariable},
+        </if>
+        updateTime = #{updateTime}
+        where
+        <if test="dataSourceId != null  and dataSourceId > 0">
+            dataSourceId = #{dataSourceId}
+        </if>
     </update>
 
 

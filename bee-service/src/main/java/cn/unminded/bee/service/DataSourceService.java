@@ -14,4 +14,6 @@ public interface DataSourceService {
     boolean save(DataSourceEntity entity);
 
     boolean updateStatus(Long dataSourceId, Integer status);
+
+    boolean update(DataSourceEntity entity);
 }

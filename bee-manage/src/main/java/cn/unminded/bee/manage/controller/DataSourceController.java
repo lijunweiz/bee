@@ -11,6 +11,7 @@ import cn.unminded.bee.persistence.criteria.QueryDataSourceCriteria;
 import cn.unminded.bee.persistence.entity.DataSourceEntity;
 import cn.unminded.bee.service.DataSourceService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,11 @@ public class DataSourceController {
     @GetMapping("/types")
     public Result queryDataSourceType() {
         Map<String, Object> data = new HashMap<>();
-        data.put("dataSourceTypeOptions", DataSourceTypeEnum.getDataSourceTypeNames());
+        List<String> dsTypes = dataSourceService.list(new QueryDataSourceCriteria())
+                .stream()
+                .map(DataSourceEntity::getDataSourceType)
+                .collect(Collectors.toList());
+        data.put("dataSourceTypeOptions", dsTypes);
         return Result.ok(data);
     }
 
@@ -73,8 +78,8 @@ public class DataSourceController {
         DataSourceEntity entity = new DataSourceEntity()
                 .setDataSourceName(request.getDataSourceName())
                 .setDataSourceType(request.getDataSourceType())
-                .setStatus(request.getStatus())
-                .setDesc(request.getDesc())
+                .setDataSourceStatus(request.getDataSourceStatus())
+                .setDataSourceDesc(request.getDataSourceDesc())
                 .setProtocol(request.getProtocol())
                 .setMethod(request.getMethod())
                 .setAddress(request.getAddress())
@@ -89,7 +94,7 @@ public class DataSourceController {
     }
 
     /**
-     * todo
+     * 数据源配置更新
      * @param request
      * @param bindingResult
      * @return
@@ -99,6 +104,13 @@ public class DataSourceController {
         if (bindingResult.hasErrors()) {
             return Result.fail(BindingResultUtil.bindingError(bindingResult));
         }
+        if (Objects.isNull(request.getDataSourceId())) {
+            return Result.fail("dataSourceId 不能为null");
+        }
+
+        DataSourceEntity target = new DataSourceEntity();
+        BeanUtils.copyProperties(request, target);
+        dataSourceService.update(target);
         return Result.ok();
     }
 
@@ -113,11 +125,11 @@ public class DataSourceController {
         if (bindingResult.hasErrors()) {
             return Result.fail(BindingResultUtil.bindingError(bindingResult));
         }
-        if (!Objects.equals(request.getStatus(), DataSourceStatusEnum.RUNNING.getStatus())) {
+        if (!Objects.equals(request.getDataSourceStatus(), DataSourceStatusEnum.RUNNING.getStatus())) {
             return Result.fail("发布状态有误");
         }
 
-        dataSourceService.updateStatus(request.getDataSourceId(), request.getStatus());
+        dataSourceService.updateStatus(request.getDataSourceId(), request.getDataSourceStatus());
         return Result.ok();
     }
 

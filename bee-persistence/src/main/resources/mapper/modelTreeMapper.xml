@@ -7,8 +7,8 @@
             modelType,
             modelName,
             `isLeaf`,
-            `desc`,
-            status,
+            modelDesc,
+            modelStatus,
             operator,
             createdTime,
             updateTime
@@ -35,16 +35,16 @@
             t_model_tree (`modelType`,
                                `modelName`,
                                 `isLeaf`,
-                                `desc`,
-                                `status`,
+                                `modelDesc`,
+                                `modelStatus`,
                                `operator`,
                                `createdTime`,
                                `updateTime`)
         values (#{modelType},
                 #{modelName},
                 #{isLeaf},
-                #{desc},
-                #{status},
+                #{modelDesc},
+                #{modelStatus},
                 #{operator},
                 #{createdTime},
                 #{updateTime})
@@ -52,7 +52,7 @@
 
     <update id="update">
         update t_model_tree
-            set status = #{status},
+            set modelStatus = #{modelStatus},
                 updateTime = #{updateTime}
             where
                 modelId = #{modelId}
