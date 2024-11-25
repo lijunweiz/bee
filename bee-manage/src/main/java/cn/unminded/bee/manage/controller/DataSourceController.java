@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -39,10 +36,10 @@ public class DataSourceController {
     @GetMapping("/types")
     public Result queryDataSourceType() {
         Map<String, Object> data = new HashMap<>();
-        List<String> dsTypes = dataSourceService.list(new QueryDataSourceCriteria())
+        Set<String> dsTypes = dataSourceService.list(new QueryDataSourceCriteria())
                 .stream()
                 .map(DataSourceEntity::getDataSourceType)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());//todo 设计系统字典
         data.put("dataSourceTypeOptions", dsTypes);
         return Result.ok(data);
     }

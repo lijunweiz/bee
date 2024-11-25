@@ -52,7 +52,26 @@
 
     <update id="update">
         update t_model_tree
-            set modelStatus = #{modelStatus},
+            <trim prefix="set">
+                <if test="modelType != null">
+                    modelType = #{modelType},
+                </if>
+                <if test="modelName != null">
+                    modelName = #{modelName},
+                </if>
+                <if test="isLeaf != null">
+                    isLeaf = #{isLeaf},
+                </if>
+                <if test="modelDesc != null">
+                    modelDesc = #{modelDesc},
+                </if>
+                <if test="modelStatus != null">
+                    modelStatus = #{modelStatus},
+                </if>
+                <if test="operator != null">
+                    operator = #{operator},
+                </if>
+            </trim>
                 updateTime = #{updateTime}
             where
                 modelId = #{modelId}

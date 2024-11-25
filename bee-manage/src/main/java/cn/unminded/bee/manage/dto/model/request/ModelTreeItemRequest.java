@@ -12,13 +12,18 @@ import javax.validation.constraints.NotNull;
 public class ModelTreeItemRequest {
 
     /**
+     * 模型id 数据更新时必须
+     */
+    private Long modelId;
+
+    /**
      * 模型类型
      */
     @NotBlank(message = "模型类型不能为空")
     private String modelType;
 
     /**
-     * 模型名称
+     * 模型名称 叶子节点必须
      */
     private String modelName;
 

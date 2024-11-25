@@ -14,4 +14,6 @@ public interface ModelService {
 
     Integer save(ModelTreeEntity modelTreeEntity);
 
+    Integer update(ModelTreeEntity modelTreeEntity);
+
 }

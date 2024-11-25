@@ -22,6 +22,8 @@ public class ModelTreeDataResponse {
     @JsonProperty("isLeaf")
     private Integer isLeaf;
 
+    private String modelDesc;
+
     @JsonProperty("children")
     private List<ModelTreeDataResponse> treeData;
 }

@@ -12,6 +12,7 @@ import cn.unminded.bee.service.ModelService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,12 +51,14 @@ public class ModelController {
             item.setModelId(entity.getModelId());
             item.setLabel(entity.getModelType());
             item.setIsLeaf(ModelTreeNodeTypeEnum.NO.getCode());
+            item.setModelDesc(entity.getModelDesc());
             if (CollectionUtils.isNotEmpty(modelList)) {
                 List<ModelTreeDataResponse> treeDataResponses = modelList.stream().map(x -> {
                     ModelTreeDataResponse children = new ModelTreeDataResponse();
                     children.setModelId(x.getModelId());
                     children.setLabel(x.getModelName());
                     children.setIsLeaf(ModelTreeNodeTypeEnum.YES.getCode());
+                    children.setModelDesc(x.getModelDesc());
                     return children;
                 }).collect(Collectors.toList());
                 item.setTreeData(treeDataResponses);
@@ -97,5 +100,22 @@ public class ModelController {
         modelService.save(modelTreeEntity);
 
         return Result.ok(modelTreeEntity.getModelId());
+    }
+
+    @PostMapping("/update/tree/item")
+    public Result updateTree(@Validated @RequestBody ModelTreeItemRequest request) {
+        if (Objects.equals(request.getIsLeaf(), ModelTreeNodeTypeEnum.YES.getCode())
+                && StringUtils.isBlank(request.getModelName())) {
+            return Result.fail("模型名称不能为空");
+        }
+        if (Objects.isNull(request.getModelId())) {
+            return Result.fail("modelId不能为null");
+        }
+
+        ModelTreeEntity modelTreeEntity = new ModelTreeEntity();
+        BeanUtils.copyProperties(request, modelTreeEntity);
+        modelService.update(modelTreeEntity);
+
+        return Result.ok();
     }
 }
