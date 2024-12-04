@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unminded.bee.persistence.mapper.DictMapper">
+
+    <sql id="criteria">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="dictId != null">
+                and dictId = #{dictId}
+            </if>
+            <if test="typeCode != null and typeCode != ''" >
+                and typeCode = #{typeCode}
+            </if>
+            <if test="itemCode != null and itemCode != ''">
+                and itemCode = #{itemCode}
+            </if>
+            <if test="itemName != null and itemName != ''">
+                and itemName = #{itemName}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="count" resultType="Long">
+        select count(1) from t_dict <include refid="criteria"/>
+    </select>
+
+    <select id="list" resultType="DictEntity">
+        select dictId,
+        typeCode,
+        itemCode,
+        itemName,
+        itemValue,
+        itemDesc,
+        itemStatus,
+        sort,
+        createdTime,
+        updateTime
+        from t_dict
+        <include refid="criteria"/>
+        order by updateTime desc
+        <if test="(start != null and start >= 0) and (limit != null and limit > 0)">
+            limit #{start}, #{limit}
+        </if>
+        <if test="!((start != null and start >= 0) and (limit != null and limit > 0))">
+            limit 10
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="DictEntity" useGeneratedKeys="true" keyProperty="dictId">
+        insert into
+        t_dict (`typeCode`,
+        `itemCode`,
+        `itemName`,
+        `itemValue`,
+        `itemDesc`,
+        `itemStatus`,
+        `sort`,
+        `createdTime`,
+        `updateTime`)
+        values (#{typeCode},
+        #{itemCode},
+        #{itemName},
+        #{itemValue},
+        #{itemDesc},
+        #{itemStatus},
+        #{sort},
+        #{createdTime},
+        #{updateTime})
+    </insert>
+
+    <update id="update" parameterType="DictEntity">
+        update t_dict set
+        <if test="typeCode != null and typeCode != ''">
+            typeCode = #{typeCode},
+        </if>
+        <if test="itemCode != null and itemCode != ''">
+            itemCode = #{itemCode},
+        </if>
+        <if test="itemName != null and itemName != ''">
+            itemName = #{itemName},
+        </if>
+        <if test="itemValue != null and itemValue != ''">
+            itemValue = #{itemValue},
+        </if>
+        <if test="itemDesc != null and itemDesc != ''">
+            itemDesc = #{itemDesc},
+        </if>
+        <if test="itemStatus != null">
+            itemStatus = #{itemStatus},
+        </if>
+        <if test="sort != null">
+            sort = #{sort},
+        </if>
+        updateTime = #{updateTime}
+        where
+        <trim prefixOverrides="and | or">
+            <if test="dictId != null">
+                and dictId = #{dictId}
+            </if>
+            <if test="itemCode != null and itemCode != ''">
+                and itemCode = #{itemCode}
+            </if>
+            <if test="itemName != null and itemName != ''">
+                and itemName = #{itemName}
+            </if>
+        </trim>
+    </update>
+
+</mapper>
