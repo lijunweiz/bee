@@ -28,8 +28,4 @@ public interface VariableMapper {
 
     Integer update(VariableEntity entity);
 
-    @Update("update t_variable set dataSourceName = #{dataSourceName}, dataSourceType = #{dataSourceType} where dataSourceId = #{dataSourceId}")
-    Integer updateDataSource(@Param("dataSourceId") Long dataSourceId, @Param("dataSourceName") String dataSourceName, @Param("dataSourceType") String dataSourceType);
-
-
 }

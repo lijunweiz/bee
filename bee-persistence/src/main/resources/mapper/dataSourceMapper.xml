@@ -28,6 +28,9 @@
             <if test="dataSourceType != null and dataSourceType != ''">
                 and dataSourceType = #{dataSourceType}
             </if>
+            <if test="dataSourceStatus != null">
+                and dataSourceStatus = #{dataSourceStatus}
+            </if>
             <if test="startTime != null">
                 and updateTime >= #{startTime}
             </if>
@@ -40,8 +43,8 @@
             <if test="ascending != null and !ascending">
                 order by updateTime desc
             </if>
-            <if test="!((start != null and start >= 0) and (end != null and end > 0))">
-                limit 20
+            <if test="(start != null and start >= 0) and (end != null and end > 0)">
+                limit #{start}, #{end}
             </if>
         </trim>
 

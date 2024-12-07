@@ -33,21 +33,13 @@ public class DataSourceController {
     @Resource
     private DataSourceService dataSourceService;
 
-    @GetMapping("/types")
-    public Result queryDataSourceType() {
-        Map<String, Object> data = new HashMap<>();
-        Set<String> dsTypes = dataSourceService.list(new QueryDataSourceCriteria())
-                .stream()
-                .map(DataSourceEntity::getDataSourceType)
-                .collect(Collectors.toSet());//todo 设计系统字典
-        data.put("dataSourceTypeOptions", dsTypes);
-        return Result.ok(data);
-    }
-
     @GetMapping("/names")
-    public Result queryDataSourceName(@RequestParam(value = "dataSourceType", required = false) String dataSourceType) {
+    public Result queryDataSourceName(@RequestParam(value = "dataSourceType", required = false) String dataSourceType,
+                                      @RequestParam(value = "dataSourceStatus", required = false) Integer dataSourceStatus) {
         Map<String, Object> data = new HashMap<>();
-        QueryDataSourceCriteria criteria = new QueryDataSourceCriteria().setDataSourceType(dataSourceType);
+        QueryDataSourceCriteria criteria = new QueryDataSourceCriteria()
+                .setDataSourceType(dataSourceType)
+                .setDataSourceStatus(Objects.isNull(dataSourceStatus) ? DataSourceStatusEnum.RUNNING.getStatus() : dataSourceStatus);
         List<String> dsNames = dataSourceService.list(criteria)
                 .stream()
                 .map(DataSourceEntity::getDataSourceName)
@@ -58,11 +50,13 @@ public class DataSourceController {
 
     @GetMapping("/list")
     public Result query(@RequestParam(value = "dataSourceType", required = false) String dataSourceType,
-                        @RequestParam(value = "dataSourceName", required = false) String dataSourceName) {
+                        @RequestParam(value = "dataSourceName", required = false) String dataSourceName,
+                        @RequestParam(value = "dataSourceStatus", required = false) Integer dataSourceStatus) {
         Map<String, Object> data = new HashMap<>();
         QueryDataSourceCriteria criteria = new QueryDataSourceCriteria()
                 .setDataSourceType(dataSourceType)
-                .setDataSourceName(dataSourceName);
+                .setDataSourceName(dataSourceName)
+                .setDataSourceStatus(dataSourceStatus);
         data.put("list", dataSourceService.list(criteria));
         return Result.ok(data);
     }

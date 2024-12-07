@@ -5,20 +5,22 @@ import cn.unminded.bee.common.annotation.Log;
 import cn.unminded.bee.common.constant.DictStatusEnum;
 import cn.unminded.bee.common.exception.BeeException;
 import cn.unminded.bee.manage.dto.dict.request.ModifyDictRequest;
+import cn.unminded.bee.manage.dto.dict.response.QueryDictItemResponse;
 import cn.unminded.bee.persistence.criteria.QueryDictCriteria;
 import cn.unminded.bee.persistence.entity.DictEntity;
 import cn.unminded.bee.service.DictService;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author lijunwei
@@ -90,6 +92,23 @@ public class DictController {
     @GetMapping("/status")
     public Result dictStatus() {
         return Result.ok(DictStatusEnum.toMapList());
+    }
+
+    @GetMapping("/query")
+    public Result itemList(@RequestParam("itemName") String itemName) {
+        QueryDictCriteria criteria = new QueryDictCriteria();
+        criteria.setItemName(itemName);
+        criteria.setItemStatus(DictStatusEnum.RUNNING.getStatus());
+        List<DictEntity> query = dictService.query(criteria);
+        List<QueryDictItemResponse> result = Lists.newArrayList();
+        if (CollectionUtils.isNotEmpty(query)) {
+            result = query.stream()
+                    .map(x -> new QueryDictItemResponse()
+                        .setItemCode(x.getItemCode())
+                        .setItemValue(x.getItemValue())
+                    ).collect(Collectors.toList());
+        }
+        return Result.ok(result);
     }
 
 }

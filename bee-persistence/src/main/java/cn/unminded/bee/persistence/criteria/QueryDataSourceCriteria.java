@@ -16,6 +16,8 @@ public class QueryDataSourceCriteria {
 
     private String dataSourceType;
 
+    private Integer dataSourceStatus;
+
     private boolean ascending = false;
 
     private Integer start;

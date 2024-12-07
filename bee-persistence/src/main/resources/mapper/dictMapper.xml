@@ -16,6 +16,9 @@
             <if test="itemName != null and itemName != ''">
                 and itemName = #{itemName}
             </if>
+            <if test="itemStatus != null and itemStatus != ''">
+                and itemStatus = #{itemStatus}
+            </if>
         </trim>
     </sql>
 
@@ -39,9 +42,6 @@
         order by updateTime desc
         <if test="(start != null and start >= 0) and (limit != null and limit > 0)">
             limit #{start}, #{limit}
-        </if>
-        <if test="!((start != null and start >= 0) and (limit != null and limit > 0))">
-            limit 10
         </if>
     </select>
 

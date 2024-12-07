@@ -33,6 +33,11 @@ public class QueryDictCriteria {
     private String itemValue;
 
     /**
+     * 状态
+     */
+    private Integer itemStatus;
+
+    /**
      * 开始位置
      */
     private Integer start;
