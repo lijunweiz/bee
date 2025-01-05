@@ -1,9 +1,14 @@
 package cn.unminded.bee.core.util;
 
-import java.io.IOException;
-import java.io.InputStream;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -12,9 +17,13 @@ import java.util.Properties;
  */
 public class BeeUtils {
 
+    private static final Logger logger = LoggerFactory.getLogger(BeeUtils.class);
+
     private BeeUtils() {
         throw new UnsupportedOperationException();
     }
+
+    private static Properties beeProperties = null;
 
     /**
      * 通过类名创建一个新的实例
@@ -60,18 +69,46 @@ public class BeeUtils {
     }
 
     /**
-     * 读取配置
+     * 获取bee配置
      * @return
+     */
+    public static Properties getBeeProperties() {
+        if (Objects.isNull(beeProperties)) {
+            beeProperties = readProperties();
+        }
+
+        return beeProperties;
+    }
+
+    /**
+     * 读取配置
+     * @return properties
      */
     public static synchronized Properties readProperties() {
         Properties properties = new Properties();
-        try (InputStream inputStream = BeeUtils.class.getClassLoader().getResourceAsStream("bee.properties")) {
-            if (Objects.nonNull(inputStream)) {
-                properties.load(inputStream);
+        InputStream inputStream = null;
+        String beePath = System.getProperty("bee");
+        if (StringUtils.isNotBlank(beePath)) {
+            try {
+                inputStream = new FileInputStream(beePath);
+            } catch (FileNotFoundException e) {
+                logger.warn("未发现配置文件: {}", e.getMessage());
             }
+        } else {
+            inputStream = BeeUtils.class.getClassLoader().getResourceAsStream("bee.properties");
+        }
+
+        if (Objects.isNull(inputStream)) {
+            return properties;
+        }
+        InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+        try {
+            properties.load(reader);
         } catch (IOException ignored) {
 
         }
+        IOUtils.closeQuietly(reader);
+        IOUtils.closeQuietly(inputStream);
 
         return properties;
     }

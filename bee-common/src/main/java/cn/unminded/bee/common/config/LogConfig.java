@@ -2,6 +2,7 @@ package cn.unminded.bee.common.config;
 
 import cn.unminded.bee.common.annotation.Log;
 import cn.unminded.bee.common.util.LogHelper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
@@ -65,7 +66,7 @@ public class LogConfig {
         long end = System.currentTimeMillis();
 
         if (!logAnnotation.ignoreResponse()) {
-            log.info("logName: {}, response: {}, 执行耗时: {}ms", logAnnotation.value(), objectMapper.writeValueAsString(resp), (end - start));
+            log.info("logName: {}, response: {}, 执行耗时: {}ms", logAnnotation.value(), this.respToString(resp), (end - start));
         }
         return resp;
     }
@@ -106,6 +107,20 @@ public class LogConfig {
                         && !(obj instanceof BindingResult)
                 )
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 如果响应已是字符串，直接返回字符串，否则再调用序列化方法为字符串
+     * @param resp 响应体
+     * @return 字符串
+     * @throws JsonProcessingException
+     */
+    private String respToString(Object resp) throws JsonProcessingException {
+        if (Objects.isNull(resp)) {
+            return null;
+        }
+
+        return resp instanceof String ? resp.toString() : objectMapper.writeValueAsString(resp);
     }
 
 }

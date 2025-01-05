@@ -30,11 +30,15 @@ public class HttpUtils {
     private static final OkHttpClient OK_HTTP_CLIENT;
 
     static {
-        Properties properties = BeeUtils.readProperties();
-        TimeUnit timeUnit = Objects.nonNull(properties.get("okhttp.timeUnit")) ? TimeUnit.valueOf(properties.getProperty("okhttp.timeUnit").toUpperCase(Locale.ROOT)) : BeeConstant.DEFAULT_TIME_UNIT;
-        long connectTimeout = Objects.nonNull(properties.get("okhttp.connectTimeout")) ? Long.parseLong(properties.get("okhttp.connectTimeout").toString()) : BeeConstant.DEFAULT_TIMEOUT;
-        long readTimeout = Objects.nonNull(properties.get("okhttp.readTimeout")) ? Long.parseLong(properties.get("okhttp.readTimeout").toString()) : BeeConstant.DEFAULT_TIMEOUT;
-        long writeTimeout = Objects.nonNull(properties.get("okhttp.writeTimeout")) ? Long.parseLong(properties.get("okhttp.writeTimeout").toString()) : BeeConstant.DEFAULT_TIMEOUT;
+        Properties properties = BeeUtils.getBeeProperties();
+        TimeUnit timeUnit = Objects.nonNull(properties.get("okhttp.timeUnit")) ?
+                TimeUnit.valueOf(properties.getProperty("okhttp.timeUnit").toUpperCase(Locale.ROOT)) : BeeConstant.DEFAULT_TIME_UNIT;
+        long connectTimeout = Objects.nonNull(properties.get("okhttp.connectTimeout")) ?
+                Long.parseLong(properties.get("okhttp.connectTimeout").toString()) : BeeConstant.DEFAULT_TIMEOUT;
+        long readTimeout = Objects.nonNull(properties.get("okhttp.readTimeout")) ?
+                Long.parseLong(properties.get("okhttp.readTimeout").toString()) : BeeConstant.DEFAULT_TIMEOUT;
+        long writeTimeout = Objects.nonNull(properties.get("okhttp.writeTimeout")) ?
+                Long.parseLong(properties.get("okhttp.writeTimeout").toString()) : BeeConstant.DEFAULT_TIMEOUT;
         String interceptors = (String) properties.get("okhttp.interceptors");
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .sslSocketFactory(createInsecureSslSocketFactory(), new TrustAllCerts())
@@ -123,30 +127,36 @@ public class HttpUtils {
         return post(url, Collections.emptyMap(), headers, body);
     }
 
-    public static String post(String url, Map<String, String> param, Map<String, String> headers, Object body) throws IOException {
+    public static String post(String url, Map<String, String> param, Map<String, String> headers,
+                              Object body) throws IOException {
         return string(BeeConstant.POST, url, param, headers, body);
     }
 
-    public static String string(String method, String url, Map<String, String> param, Map<String, String> headers, Object body) throws IOException {
+    public static String string(String method, String url, Map<String, String> param, Map<String, String> headers,
+                                Object body) throws IOException {
         Response response = invoke(method, url, param, headers, body);
         return Objects.nonNull(response.body()) ? response.body().string() : null;
     }
 
-    public static <T> T invoke(String method, String url, Map<String, String> param, Map<String, String> headers, Object body, TypeReference<T> typeReference) throws IOException {
+    public static <T> T invoke(String method, String url, Map<String, String> param, Map<String, String> headers,
+                               Object body, TypeReference<T> typeReference) throws IOException {
         Response response = invoke(method, url, param, headers, body);
         return JSON.parseObject(Objects.nonNull(response.body()) ? response.body().string() : null, typeReference);
     }
 
-    public static <T> T invoke(String method, String url, Map<String, String> param, Map<String, String> headers, Object body, Class<T> clazz) throws IOException {
+    public static <T> T invoke(String method, String url, Map<String, String> param, Map<String, String> headers,
+                               Object body, Class<T> clazz) throws IOException {
         Response response = invoke(method, url, param, headers, body);
         return JSON.parseObject(Objects.nonNull(response.body()) ? response.body().string() : null, clazz);
     }
 
-    public static Response httpResponse(String method, String url, Map<String, String> param, Map<String, String> headers, Object body) throws IOException {
+    public static Response httpResponse(String method, String url, Map<String, String> param,
+                                        Map<String, String> headers, Object body) throws IOException {
         return invoke(method, url, param, headers, body);
     }
 
-    private static Response invoke(String method, String url, Map<String, String> param, Map<String, String> headers, Object body) throws IOException {
+    private static Response invoke(String method, String url, Map<String, String> param,
+                                   Map<String, String> headers, Object body) throws IOException {
         // 处理查询参数
         HttpUrl httpUrl = HttpUrl.parse(url);
         if (Objects.isNull(httpUrl)) {
@@ -168,7 +178,7 @@ public class HttpUtils {
             Request request = requestBuilder.get().build();
             return OK_HTTP_CLIENT.newCall(request).execute();
         } else {
-            Objects.requireNonNull(body, "POST body 不能为null");
+            Objects.requireNonNull(body, "body不能为null");
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(body));
             Request request = requestBuilder.post(requestBody).build();
             return OK_HTTP_CLIENT.newCall(request).execute();
