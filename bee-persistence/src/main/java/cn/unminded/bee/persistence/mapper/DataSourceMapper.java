@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface DataSourceMapper {
 
+    Long count(QueryDataSourceCriteria criteria);
+
     List<DataSourceEntity> list(QueryDataSourceCriteria criteria);
 
     Integer insert(DataSourceEntity entity);

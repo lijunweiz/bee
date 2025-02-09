@@ -9,6 +9,9 @@ import java.util.List;
  * @author lijunwei
  */
 public interface DataSourceService {
+
+    Long count(QueryDataSourceCriteria criteria);
+
     List<DataSourceEntity> list(QueryDataSourceCriteria criteria);
 
     boolean save(DataSourceEntity entity);

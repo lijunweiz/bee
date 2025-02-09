@@ -2,17 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.unminded.bee.persistence.mapper.ModelTreeMapper">
 
-    <select id="list" resultType="ModelTreeEntity">
-        select modelId,
-            modelType,
-            modelName,
-            `isLeaf`,
-            modelDesc,
-            modelStatus,
-            operator,
-            createdTime,
-            updateTime
-        from t_model_tree
+    <sql id="criteria">
         <trim prefix="where" prefixOverrides="and | or">
             <if test="modelId != null">
                 and modelId = #{modelId}
@@ -26,8 +16,29 @@
             <if test="isLeaf != null">
                 and isLeaf = #{isLeaf}
             </if>
+            order by createdTime
+            <if test="(start != null and start >= 0) and (limit != null and limit > 0)">
+                limit #{start}, #{limit}
+            </if>
         </trim>
-        order by createdTime asc
+    </sql>
+
+    <select id="count" resultType="Long">
+        select count(1) from t_model_tree <include refid="criteria"/>
+    </select>
+
+    <select id="list" resultType="ModelTreeEntity">
+        select modelId,
+            modelType,
+            modelName,
+            `isLeaf`,
+            modelDesc,
+            modelStatus,
+            operator,
+            createdTime,
+            updateTime
+        from t_model_tree
+        <include refid="criteria"/>
     </select>
 
     <insert id="insert" parameterType="ModelTreeEntity" useGeneratedKeys="true" keyProperty="modelId">

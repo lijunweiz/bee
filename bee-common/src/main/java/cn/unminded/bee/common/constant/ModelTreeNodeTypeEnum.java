@@ -1,4 +1,4 @@
-package cn.unminded.bee.manage.constant;
+package cn.unminded.bee.common.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,15 +8,11 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ModelStatusEnum {
+public enum ModelTreeNodeTypeEnum {
 
-    CREATE(0, "新建"),
+    NO(0, "非叶子节点"),
 
-    RUNNING(1, "启用"),
-
-    STOP(2, "启用"),
-
-    DEPRECATED(3, "废弃"),
+    YES(1, "叶子节点")
 
     ;
 

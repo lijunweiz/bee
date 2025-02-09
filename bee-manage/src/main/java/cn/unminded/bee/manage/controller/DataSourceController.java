@@ -3,7 +3,6 @@ package cn.unminded.bee.manage.controller;
 import cn.unminded.bee.common.Result;
 import cn.unminded.bee.common.annotation.Log;
 import cn.unminded.bee.common.constant.DataSourceStatusEnum;
-import cn.unminded.bee.common.constant.DataSourceTypeEnum;
 import cn.unminded.bee.common.util.BindingResultUtil;
 import cn.unminded.bee.manage.dto.datasource.request.AddDataSourceRequest;
 import cn.unminded.bee.manage.dto.datasource.request.ModifyDataSourceRequest;
@@ -51,13 +50,19 @@ public class DataSourceController {
     @GetMapping("/list")
     public Result query(@RequestParam(value = "dataSourceType", required = false) String dataSourceType,
                         @RequestParam(value = "dataSourceName", required = false) String dataSourceName,
-                        @RequestParam(value = "dataSourceStatus", required = false) Integer dataSourceStatus) {
+                        @RequestParam(value = "dataSourceStatus", required = false) Integer dataSourceStatus,
+                        @RequestParam(value = "page", defaultValue = "1") Integer page,
+                        @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
         Map<String, Object> data = new HashMap<>();
         QueryDataSourceCriteria criteria = new QueryDataSourceCriteria()
                 .setDataSourceType(dataSourceType)
                 .setDataSourceName(dataSourceName)
-                .setDataSourceStatus(dataSourceStatus);
+                .setDataSourceStatus(dataSourceStatus)
+                .setStart(Objects.equals(page, 1) ? 0 : (page - 1) * limit)
+                .setLimit(limit);
         data.put("list", dataSourceService.list(criteria));
+        data.put("total", dataSourceService.count(criteria));
+
         return Result.ok(data);
     }
 

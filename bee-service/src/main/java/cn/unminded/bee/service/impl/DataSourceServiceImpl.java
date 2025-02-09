@@ -26,6 +26,11 @@ public class DataSourceServiceImpl implements DataSourceService {
     private DataSourceMapper dataSourceMapper;
 
     @Override
+    public Long count(QueryDataSourceCriteria criteria) {
+        return dataSourceMapper.count(criteria);
+    }
+
+    @Override
     public List<DataSourceEntity> list(QueryDataSourceCriteria criteria) {
         if (StringUtils.isBlank(criteria.getStartTime())) {
             criteria.setStartTime(BeeConstant.BEE_START_TIME);

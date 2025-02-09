@@ -47,6 +47,11 @@ public class ModelTreeEntity {
     private String operator;
 
     /**
+     * 模型当前版本
+     */
+    private Integer currentModelVersion;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createdTime;

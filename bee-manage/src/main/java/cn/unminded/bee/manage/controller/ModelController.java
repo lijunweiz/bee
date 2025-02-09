@@ -2,10 +2,12 @@ package cn.unminded.bee.manage.controller;
 
 import cn.unminded.bee.common.Result;
 import cn.unminded.bee.common.annotation.Log;
-import cn.unminded.bee.manage.constant.ModelStatusEnum;
-import cn.unminded.bee.manage.constant.ModelTreeNodeTypeEnum;
+import cn.unminded.bee.common.constant.ModelStatusEnum;
+import cn.unminded.bee.common.constant.ModelTreeNodeTypeEnum;
+import cn.unminded.bee.manage.dto.model.request.DeleteModelTreeItemRequest;
 import cn.unminded.bee.manage.dto.model.request.ModelTreeItemRequest;
 import cn.unminded.bee.manage.dto.model.response.ModelTreeDataResponse;
+import cn.unminded.bee.persistence.criteria.DeleteModelCriteria;
 import cn.unminded.bee.persistence.criteria.QueryModelCriteria;
 import cn.unminded.bee.persistence.entity.ModelTreeEntity;
 import cn.unminded.bee.service.ModelService;
@@ -34,8 +36,9 @@ public class ModelController {
     private ModelService modelService;
 
     @GetMapping("/data")
-    public Result getModelTreeData() {
-        Map<String, Object> result = new HashMap<>();
+    public Result getModelTreeData(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                   @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
+        Map<String, Object> data = new HashMap<>();
         List<ModelTreeDataResponse> treeDataResult = new ArrayList<>();
         // 查询组
         QueryModelCriteria groupCriteria = new QueryModelCriteria().setIsLeaf(ModelTreeNodeTypeEnum.NO.getCode());
@@ -66,11 +69,14 @@ public class ModelController {
 
             treeDataResult.add(item);
         }
-        result.put("treeData", treeDataResult);// 树形列表
-        QueryModelCriteria itemCriteria = new QueryModelCriteria().setIsLeaf(ModelTreeNodeTypeEnum.YES.getCode());
-        result.put("list", modelService.modelTreeData(itemCriteria));// 表格数据
-
-        return Result.ok(result);
+        data.put("treeData", treeDataResult);// 树形列表
+        QueryModelCriteria itemCriteria = new QueryModelCriteria()
+                .setStart(Objects.equals(page, 1) ? 0 : (page - 1) * limit)
+                .setLimit(limit)
+                .setIsLeaf(ModelTreeNodeTypeEnum.YES.getCode());
+        data.put("list", modelService.modelTreeData(itemCriteria));// 表格数据
+        data.put("total", modelService.count(itemCriteria));
+        return Result.ok(data);
     }
 
     @PostMapping("/create/tree/item")
@@ -116,6 +122,15 @@ public class ModelController {
         BeanUtils.copyProperties(request, modelTreeEntity);
         modelService.update(modelTreeEntity);
 
+        return Result.ok();
+    }
+
+    @PostMapping("/delete/tree/item")
+    public Result delete(@Validated @RequestBody DeleteModelTreeItemRequest request) {
+        DeleteModelCriteria criteria = new DeleteModelCriteria()
+                .setModelId(request.getModelId())
+                .setIsLeaf(request.getIsLeaf());
+        modelService.delete(criteria);
         return Result.ok();
     }
 }

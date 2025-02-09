@@ -1,12 +1,16 @@
 package cn.unminded.bee.service.impl;
 
+import cn.unminded.bee.common.constant.ModelTreeNodeTypeEnum;
 import cn.unminded.bee.common.exception.BeeException;
+import cn.unminded.bee.persistence.criteria.DeleteModelCriteria;
 import cn.unminded.bee.persistence.criteria.QueryModelCriteria;
+import cn.unminded.bee.persistence.criteria.QueryVariableCriteria;
 import cn.unminded.bee.persistence.entity.ModelTreeEntity;
 import cn.unminded.bee.persistence.mapper.ModelTreeMapper;
 import cn.unminded.bee.service.ModelService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,6 +37,11 @@ public class ModelServiceImpl implements ModelService {
         }
 
         return Collections.emptyList();
+    }
+
+    @Override
+    public Long count(QueryModelCriteria criteria) {
+        return modelTreeMapper.count(criteria);
     }
 
     @Override
@@ -65,5 +74,23 @@ public class ModelServiceImpl implements ModelService {
         }
 
         return modelTreeMapper.update(modelTreeEntity);
+    }
+
+    @Override
+    public void delete(DeleteModelCriteria criteria) {
+        QueryModelCriteria queryModelCriteria = new QueryModelCriteria()
+                .setModelId(criteria.getModelId())
+                .setIsLeaf(criteria.getIsLeaf());
+        List<ModelTreeEntity> list = modelTreeMapper.list(queryModelCriteria);
+        if (CollectionUtils.isEmpty(list)) {
+            throw new BeeException("没有需要删除的数据，请检查");
+        }
+        // 如果是非叶子节点
+        if (Objects.equals(criteria.getIsLeaf(), ModelTreeNodeTypeEnum.NO.getCode())) {
+            throw new BeeException("请先删除子节点");
+        } else { // 如果是叶子节点
+            ModelTreeEntity modelTreeEntity = list.get(0);
+            //todo
+        }
     }
 }

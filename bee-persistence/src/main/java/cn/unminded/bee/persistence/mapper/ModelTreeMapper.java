@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface ModelTreeMapper {
 
+    Long count(QueryModelCriteria criteria);
+
     List<ModelTreeEntity> list(QueryModelCriteria criteria);
 
     Integer insert(ModelTreeEntity entity);
