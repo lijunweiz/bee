@@ -16,10 +16,6 @@
             <if test="isLeaf != null">
                 and isLeaf = #{isLeaf}
             </if>
-            order by createdTime
-            <if test="(start != null and start >= 0) and (limit != null and limit > 0)">
-                limit #{start}, #{limit}
-            </if>
         </trim>
     </sql>
 
@@ -39,6 +35,10 @@
             updateTime
         from t_model_tree
         <include refid="criteria"/>
+        order by createdTime
+        <if test="(start != null and start >= 0) and (limit != null and limit > 0)">
+            limit #{start}, #{limit}
+        </if>
     </select>
 
     <insert id="insert" parameterType="ModelTreeEntity" useGeneratedKeys="true" keyProperty="modelId">

@@ -22,15 +22,6 @@
             <if test="endTime != null">
                 and updateTime &lt; #{endTime}
             </if>
-            <if test="ascending != null and ascending">
-                order by updateTime asc
-            </if>
-            <if test="ascending != null and !ascending">
-                order by updateTime desc
-            </if>
-            <if test="(start != null and start >= 0) and (limit != null and limit > 0)">
-                limit #{start}, #{limit}
-            </if>
         </trim>
     </sql>
 
@@ -55,6 +46,15 @@
             updateTime
         from t_data_source
         <include refid="criteria"/>
+        <if test="ascending != null and ascending">
+            order by updateTime asc
+        </if>
+        <if test="ascending != null and !ascending">
+            order by updateTime desc
+        </if>
+        <if test="(start != null and start >= 0) and (limit != null and limit > 0)">
+            limit #{start}, #{limit}
+        </if>
     </select>
 
     <insert id="insert" parameterType="DataSourceEntity" useGeneratedKeys="true" keyProperty="dataSourceId">
