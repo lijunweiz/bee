@@ -4,6 +4,7 @@ import cn.unminded.bee.common.util.IPHelper;
 import cn.unminded.bee.common.util.LogHelper;
 import cn.unminded.rtool.util.IOUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,7 +57,26 @@ public class DefendersFilter implements Filter {
     }
 
     private boolean isIpWhitelist(String ip) {
-        return CollectionUtils.isNotEmpty(ipWhitelist) && ipWhitelist.contains(ip);
+        if (CollectionUtils.isEmpty(ipWhitelist)) {
+            return false;
+        }
+
+        for (String ipWhite : ipWhitelist) {
+            if (Objects.equals(ipWhite, ip)) {
+                return true;
+            }
+
+            if (ipWhite.contains("*")) {
+                String replace = ipWhite.replace("*", "");
+                if (StringUtils.isEmpty(replace)) {
+                    return true;
+                }
+
+                return ip.startsWith(replace);
+            }
+        }
+
+        return false;
     }
 
 }

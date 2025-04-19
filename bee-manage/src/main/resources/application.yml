@@ -11,4 +11,4 @@ mybatis:
 bee:
   security:
     ip:
-      whitelist: 127.0.0.1,${spring.cloud.client.ip-address}
+      whitelist: '*'
