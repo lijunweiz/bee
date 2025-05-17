@@ -3,10 +3,10 @@ package cn.unminded.bee.core.rule;
 import java.util.Objects;
 
 /**
- * 数学运算符
+ * 规则运算符
  * @author lijunwei
  */
-public class MathOperator {
+public class RuleOperator {
 
     /**
      * 条件id
@@ -27,7 +27,7 @@ public class MathOperator {
         return itemId;
     }
 
-    public MathOperator setItemId(String itemId) {
+    public RuleOperator setItemId(String itemId) {
         this.itemId = itemId;
         return this;
     }
@@ -36,7 +36,7 @@ public class MathOperator {
         return operator;
     }
 
-    public MathOperator setOperator(String operator) {
+    public RuleOperator setOperator(String operator) {
         this.operator = operator;
         return this;
     }
@@ -45,7 +45,7 @@ public class MathOperator {
         return itemDesc;
     }
 
-    public MathOperator setItemDesc(String itemDesc) {
+    public RuleOperator setItemDesc(String itemDesc) {
         this.itemDesc = itemDesc;
         return this;
     }
@@ -54,7 +54,7 @@ public class MathOperator {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MathOperator that = (MathOperator) o;
+        RuleOperator that = (RuleOperator) o;
         return Objects.equals(itemId, that.itemId)
                 && Objects.equals(operator, that.operator)
                 && Objects.equals(itemDesc, that.itemDesc);
@@ -67,7 +67,7 @@ public class MathOperator {
 
     @Override
     public String toString() {
-        return "MathOperator{" +
+        return "RuleOperator{" +
                 "itemId='" + itemId + '\'' +
                 ", operator='" + operator + '\'' +
                 ", itemDesc='" + itemDesc + '\'' +

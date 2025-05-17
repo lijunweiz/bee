@@ -10,17 +10,17 @@ class BeeUtilsTest {
 
     @Test
     void testReadProperties() {
-        Object ruleArithmeticOperator = BeeUtils.getBeeProperties().get("ruleArithmeticOperator");
-        System.out.println("ruleArithmeticOperator: " + ruleArithmeticOperator);
-        assertTrue(Objects.nonNull(ruleArithmeticOperator));
+        Object ruleOperatorArithmetic = BeeUtils.getBeeProperties().get("rule.operator.arithmetic");
+        System.out.println("rule.operator.arithmetic: " + ruleOperatorArithmetic);
+        assertTrue(Objects.nonNull(ruleOperatorArithmetic));
 
-        Object ruleCompareOperator = BeeUtils.getBeeProperties().get("ruleCompareOperator");
-        System.out.println("ruleCompareOperator: " + ruleCompareOperator);
-        assertTrue(Objects.nonNull(ruleCompareOperator));
+        Object ruleOperatorCompare = BeeUtils.getBeeProperties().get("rule.operator.compare");
+        System.out.println("rule.operator.compare: " + ruleOperatorCompare);
+        assertTrue(Objects.nonNull(ruleOperatorCompare));
 
-        Object ruleLogicalOperator = BeeUtils.getBeeProperties().get("ruleLogicalOperator");
-        System.out.println("ruleLogicalOperator: " + ruleLogicalOperator);
-        assertTrue(Objects.nonNull(ruleLogicalOperator));
+        Object ruleOperatorLogical = BeeUtils.getBeeProperties().get("rule.operator.logical");
+        System.out.println("rule.operator.logical: " + ruleOperatorLogical);
+        assertTrue(Objects.nonNull(ruleOperatorLogical));
     }
 
 }

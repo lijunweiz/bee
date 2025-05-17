@@ -173,15 +173,18 @@ public class HttpUtils {
             headers.forEach(requestBuilder::header);
         }
 
+        Request request = null;
         // 执行调用
         if (Objects.equals(method, BeeConstant.GET)) {
-            Request request = requestBuilder.get().build();
-            return OK_HTTP_CLIENT.newCall(request).execute();
+            request = requestBuilder.get().build();
         } else {
             Objects.requireNonNull(body, "body不能为null");
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), JSON.toJSONString(body));
-            Request request = requestBuilder.post(requestBody).build();
-            return OK_HTTP_CLIENT.newCall(request).execute();
+            request = requestBuilder.post(requestBody).build();
+        }
+
+        try (Response response = OK_HTTP_CLIENT.newCall(request).execute()) {
+            return response;
         }
     }
 

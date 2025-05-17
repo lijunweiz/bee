@@ -133,4 +133,21 @@ public class ModelController {
         modelService.delete(criteria);
         return Result.ok();
     }
+
+    @GetMapping("/query")
+    public Result queryModel(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                             @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                             @RequestParam(value = "modelType") String modelType,
+                             @RequestParam(value = "modelName") String modelName) {
+        Map<String, Object> data = new HashMap<>();
+        QueryModelCriteria itemCriteria = new QueryModelCriteria()
+                .setStart(Objects.equals(page, 1) ? 0 : (page - 1) * limit)
+                .setLimit(limit)
+                .setIsLeaf(ModelTreeNodeTypeEnum.YES.getCode())
+                .setModelType(modelType)
+                .setModelName(modelName);
+        data.put("list", modelService.modelTreeData(itemCriteria));// 表格数据
+        data.put("total", modelService.count(itemCriteria));
+        return Result.ok(data);
+    }
 }
