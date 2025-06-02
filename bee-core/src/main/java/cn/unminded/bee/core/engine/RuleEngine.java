@@ -1,5 +1,7 @@
 package cn.unminded.bee.core.engine;
 
+import com.googlecode.aviator.Expression;
+
 import java.util.Map;
 
 /**
@@ -8,7 +10,13 @@ import java.util.Map;
  */
 public interface RuleEngine {
 
-    void compile(String expression);
+    Expression compile(String expression);
+
+    Expression compile(String cacheKey, String expression);
+
+    Expression compile(String cacheKey, String expression, boolean cached);
+
+    Object executeCache(String cacheKey, Map<String, Object> env);
 
     Object execute(String expression);
 

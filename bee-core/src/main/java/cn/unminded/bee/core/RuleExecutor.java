@@ -2,6 +2,7 @@ package cn.unminded.bee.core;
 
 import cn.unminded.bee.core.engine.AviatorRuleEngine;
 import cn.unminded.bee.core.engine.RuleEngine;
+import com.googlecode.aviator.Expression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,12 +19,18 @@ public class RuleExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(RuleExecutor.class);
 
-    private final RuleEngine ruleEngine = new AviatorRuleEngine();
+    private final RuleEngine ruleEngine;
 
     private static final Properties EXECUTORS_EXPRESSIONS = new Properties();
 
-    {
-        warmUp();
+    public RuleExecutor() {
+        this.ruleEngine = new AviatorRuleEngine();
+        this.warmUp();
+    }
+
+    public RuleExecutor(RuleEngine ruleEngine) {
+        this.ruleEngine = ruleEngine;
+        this.warmUp();
     }
 
     private void warmUp() {
@@ -44,13 +51,25 @@ public class RuleExecutor {
     private void prepareCompile() {
         if (!EXECUTORS_EXPRESSIONS.isEmpty()) {
             for (Map.Entry<Object, Object> entry : EXECUTORS_EXPRESSIONS.entrySet()) {
-                ruleEngine.compile(entry.getValue().toString());
+                this.compile(entry.getKey().toString(), entry.getValue().toString());
             }
         }
     }
 
-    public void compile(String expression) {
-        ruleEngine.compile(expression);
+    public Expression compile(String expression) {
+        return ruleEngine.compile(expression);
+    }
+
+    public Expression compile(String cacheKey, String expression) {
+        return ruleEngine.compile(cacheKey, expression);
+    }
+
+    public Object executeCache(String cacheKey) {
+        return this.executeCache(cacheKey, null);
+    }
+
+    public Object executeCache(String cacheKey, Map<String, Object> data) {
+        return ruleEngine.executeCache(cacheKey, data);
     }
 
     public Object execute(String expression) {
