@@ -4,6 +4,7 @@ import cn.unminded.bee.common.Result;
 import cn.unminded.bee.common.exception.VariableManageException;
 import cn.unminded.bee.common.util.BindingResultUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.ClientAbortException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.SocketException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author lijunwei
@@ -21,7 +24,15 @@ public class BeeExceptionHandler {
 
     @ExceptionHandler({Exception.class, Throwable.class})
     public Result exceptionHandler(HttpServletRequest request, Throwable e) {
-        log.error("系统调用异常: {}, {}", request.getRequestURI(), ExceptionUtils.getStackTrace(e));
+        String error = null;
+        if (e instanceof ClientAbortException
+                || e instanceof SocketException
+                || e instanceof TimeoutException) {
+            error = e.getMessage();
+        } else {
+            error = ExceptionUtils.getStackTrace(e);
+        }
+        log.error("系统调用异常: {}, {}", request.getRequestURI(), error);
         return Result.fail("系统内部错误");
     }
 
