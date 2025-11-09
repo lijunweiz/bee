@@ -17,21 +17,24 @@ public class LogHelper {
     }
 
     public static String appendUrl(HttpServletRequest request) {
-        String sb = null;
+        String sbLog = null;
         try {
-            sb = new StringBuilder()
-                    .append(IPHelper.getRemoteIP(request)).append(" ")
-                    .append(request.getMethod()).append(" ")
+            StringBuilder sb = new StringBuilder()
+                    .append(IPHelper.getRemoteIP(request)).append(",")
+                    .append(request.getMethod()).append(",")
                     .append("Content-Type: ").append(request.getContentType()).append(",")
-                    .append("X-Token: ").append(request.getHeader("X-Token")).append(" ")
-                    .append(request.getRequestURI()).append(Objects.nonNull(request.getQueryString()) ? "?" + request.getQueryString() : StringUtils.EMPTY)
-                    .toString();
-            sb = URLDecoder.decode(sb, StandardCharsets.UTF_8.displayName());
+                    .append("X-Token: ").append(request.getHeader("X-Token")).append(",")
+                    .append(URLDecoder.decode(request.getRequestURI(), StandardCharsets.UTF_8.displayName()));
+            if (Objects.nonNull(request.getQueryString())) {
+                sb.append("?").append(request.getQueryString());
+            }
+
+            sbLog = URLDecoder.decode(sb.toString(), StandardCharsets.UTF_8.displayName());
         } catch (UnsupportedEncodingException e) {
             //ignore
         }
 
-        return sb;
+        return sbLog;
     }
 
     public static String logBody(HttpServletRequest request) {

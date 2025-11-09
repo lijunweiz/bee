@@ -17,15 +17,15 @@ import java.time.format.DateTimeFormatter;
 @Configuration
 public class WebConfig {
 
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final LocalDateTimeSerializer SERIALIZER = new LocalDateTimeSerializer(DATE_TIME_FORMATTER);
+    private static final LocalDateTimeDeserializer DESERIALIZER = new LocalDateTimeDeserializer(DATE_TIME_FORMATTER);
+
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer customizeLocalDateTimeFormat() {
         return jacksonObjectMapperBuilder -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTimeDeserializer deserializer = new LocalDateTimeDeserializer(formatter);
-            LocalDateTimeSerializer serializer = new LocalDateTimeSerializer(formatter);
-            jacksonObjectMapperBuilder.serializerByType(LocalDateTime.class, serializer);
-            jacksonObjectMapperBuilder.deserializerByType(LocalDateTime.class, deserializer);
-
+            jacksonObjectMapperBuilder.serializerByType(LocalDateTime.class, SERIALIZER);
+            jacksonObjectMapperBuilder.deserializerByType(LocalDateTime.class, DESERIALIZER);
         };
     }
 

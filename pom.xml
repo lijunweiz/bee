@@ -23,6 +23,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <resource.delimiter>@</resource.delimiter>
         <spring-boot.version>2.6.14</spring-boot.version>
         <spring-cloud.version>2021.0.5</spring-cloud.version>
@@ -43,7 +44,7 @@
         <baomidou.version>4.1.0</baomidou.version>
         <hutool.version>5.8.27</hutool.version>
         <jsqlparser.version>5.0</jsqlparser.version>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <disruptor.version>3.4.2</disruptor.version>
     </properties>
 
     <dependencyManagement>
@@ -219,6 +220,12 @@
                 <groupId>com.github.jsqlparser</groupId>
                 <artifactId>jsqlparser</artifactId>
                 <version>${jsqlparser.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.lmax/disruptor -->
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -11,16 +11,16 @@ public class Result {
     public static final String FAIL_MSG = "处理失败";
     private static final String YYYY_MM_DD_HH_MM_SS_SSS = "yyyy-MM-dd HH:mm:ss.SSS";
 
-    private String timestamp;
-
     private Integer code;
 
     private String desc;
 
+    private String timestamp;
+
     private Object data;
 
     public Result() {
-        this.timestamp = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_SSS).format(new Date());
+        this(null, null, null);
     }
 
     public Result(Integer code, String desc, Object data) {
@@ -28,15 +28,6 @@ public class Result {
         this.desc = desc;
         this.timestamp = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_SSS).format(new Date());
         this.data = data;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public Result setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-        return this;
     }
 
     public Integer getCode() {
@@ -57,6 +48,15 @@ public class Result {
         return this;
     }
 
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public Result setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+        return this;
+    }
+
     public Object getData() {
         return data;
     }
@@ -69,9 +69,9 @@ public class Result {
     @Override
     public String toString() {
         return "Result{" +
-                "timestamp='" + timestamp + '\'' +
-                ", code=" + code +
+                "code=" + code +
                 ", desc='" + desc + '\'' +
+                ", timestamp='" + timestamp + '\'' +
                 ", data=" + data +
                 '}';
     }
