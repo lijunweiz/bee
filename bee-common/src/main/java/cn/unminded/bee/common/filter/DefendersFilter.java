@@ -26,7 +26,7 @@ public class DefendersFilter implements Filter {
 
     private final Logger logger = LoggerFactory.getLogger(DefendersFilter.class);
 
-    @Value("${bee.security.ip.whitelist}")
+    @Value("${bee.security.ip.whitelist:null}")
     private List<String> ipWhitelist;
 
     @Override
