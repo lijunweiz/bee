@@ -14,7 +14,10 @@ import java.util.Optional;
 public enum DataSourceStatusEnum {
 
     DEFAULT(0, "新建"),
-    RUNNING(1, "运行中"),
+    EDIT(1, "编辑"),
+    RUNNING(2, "运行"),
+    STOP(3, "停用"),
+    DELETE(4, "删除"),
 
     ;
 

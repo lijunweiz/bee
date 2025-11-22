@@ -7,7 +7,7 @@ import lombok.Data;
  * @author lijunwei
  */
 @Data
-public class ModifyDictRequest {
+public class ModifyDictItemRequest {
 
     private Long id;
 
@@ -17,9 +17,19 @@ public class ModifyDictRequest {
     private String dictCode;
 
     /**
-     * 字典值
+     * 项编码
      */
-    private String dictValue;
+    private String itemCode;
+
+    /**
+     * 项名称
+     */
+    private String itemName;
+
+    /**
+     * 项值
+     */
+    private String itemValue;
 
     /**
      * 状态，1表示启用，0表示禁用
@@ -29,8 +39,12 @@ public class ModifyDictRequest {
     private Integer status;
 
     /**
+     * 顺序
+     */
+    private Integer sort;
+
+    /**
      * 描述信息
      */
     private String description;
-
 }

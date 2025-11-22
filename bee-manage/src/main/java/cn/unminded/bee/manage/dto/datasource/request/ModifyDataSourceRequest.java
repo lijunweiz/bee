@@ -11,20 +11,11 @@ import javax.validation.constraints.NotNull;
 public class ModifyDataSourceRequest {
 
     @NotNull(message = "数据源id不能为空")
-    private Long dataSourceId;
-
-    /**
-     * 数据源名称
-     */
-    private String dataSourceName;
-
-    /**
-     * 数据源类型
-     */
-    private String dataSourceType;
+    private Long id;
 
     /**
      * 数据源状态
      */
     private Integer dataSourceStatus;
+
 }

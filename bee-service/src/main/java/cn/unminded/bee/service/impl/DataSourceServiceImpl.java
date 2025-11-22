@@ -49,18 +49,18 @@ public class DataSourceServiceImpl implements DataSourceService {
     @Override
     public boolean updateStatus(Long dataSourceId, Integer status) {
         DataSourceEntity entity = new DataSourceEntity()
-                .setDataSourceId(dataSourceId)
+                .setId(dataSourceId)
                 .setDataSourceStatus(status)
-                .setUpdateTime(LocalDateTime.now());
+                .setUpdatedTime(LocalDateTime.now());
         return dataSourceMapper.update(entity) == 1;
     }
 
     @Override
     public boolean update(DataSourceEntity entity) {
         Objects.requireNonNull(entity);
-        Objects.requireNonNull(entity.getDataSourceId());
-        if (Objects.isNull(entity.getUpdateTime())) {
-            entity.setUpdateTime(LocalDateTime.now());
+        Objects.requireNonNull(entity.getId());
+        if (Objects.isNull(entity.getUpdatedTime())) {
+            entity.setUpdatedTime(LocalDateTime.now());
         }
 
         return dataSourceMapper.update(entity) == 1;

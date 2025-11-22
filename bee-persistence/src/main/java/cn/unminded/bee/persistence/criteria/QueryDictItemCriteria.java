@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
  */
 @Accessors(chain = true)
 @Data
-public class QueryDictCriteria {
+public class QueryDictItemCriteria {
 
     private Long id;
 
@@ -16,6 +16,16 @@ public class QueryDictCriteria {
      * 字典编码
      */
     private String dictCode;
+
+    /**
+     * 项编码
+     */
+    private String itemCode;
+
+    /**
+     * 项名称
+     */
+    private String itemName;
 
     /**
      * 状态

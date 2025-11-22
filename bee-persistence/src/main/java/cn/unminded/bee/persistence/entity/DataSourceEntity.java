@@ -13,17 +13,17 @@ import java.time.LocalDateTime;
 @Data
 public class DataSourceEntity {
 
-    private Long dataSourceId;
-
-    /**
-     * 数据源名称
-     */
-    private String dataSourceName;
+    private Long id;
 
     /**
      * 数据源类型
      */
     private String dataSourceType;
+
+    /**
+     * 数据源名称
+     */
+    private String dataSourceName;
 
     /**
      * 数据源状态
@@ -78,6 +78,6 @@ public class DataSourceEntity {
     /**
      * 更新时间
      */
-    private LocalDateTime updateTime;
+    private LocalDateTime updatedTime;
 
 }

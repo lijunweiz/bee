@@ -37,8 +37,7 @@ public class DataSourceController {
                                       @RequestParam(value = "dataSourceStatus", required = false) Integer dataSourceStatus) {
         Map<String, Object> data = new HashMap<>();
         QueryDataSourceCriteria criteria = new QueryDataSourceCriteria()
-                .setDataSourceType(dataSourceType)
-                .setDataSourceStatus(Objects.isNull(dataSourceStatus) ? DataSourceStatusEnum.RUNNING.getStatus() : dataSourceStatus);
+                .setDataSourceType(dataSourceType);
         List<String> dsNames = dataSourceService.list(criteria)
                 .stream()
                 .map(DataSourceEntity::getDataSourceName)
@@ -72,8 +71,8 @@ public class DataSourceController {
             return Result.fail(BindingResultUtil.bindingError(bindingResult));
         }
         DataSourceEntity entity = new DataSourceEntity()
-                .setDataSourceName(request.getDataSourceName())
                 .setDataSourceType(request.getDataSourceType())
+                .setDataSourceName(request.getDataSourceName())
                 .setDataSourceStatus(request.getDataSourceStatus())
                 .setDataSourceDesc(request.getDataSourceDesc())
                 .setProtocol(request.getProtocol())
@@ -84,7 +83,7 @@ public class DataSourceController {
                 .setRequestBody(request.getRequestBody())
                 .setExtractVariable(request.getExtractVariable())
                 .setCreatedTime(LocalDateTime.now())
-                .setUpdateTime(LocalDateTime.now());
+                .setUpdatedTime(LocalDateTime.now());
         dataSourceService.save(entity);
         return Result.ok();
     }
@@ -100,8 +99,8 @@ public class DataSourceController {
         if (bindingResult.hasErrors()) {
             return Result.fail(BindingResultUtil.bindingError(bindingResult));
         }
-        if (Objects.isNull(request.getDataSourceId())) {
-            return Result.fail("dataSourceId 不能为null");
+        if (Objects.isNull(request.getId())) {
+            return Result.fail("数据源id不能为null");
         }
 
         DataSourceEntity target = new DataSourceEntity();
@@ -125,7 +124,7 @@ public class DataSourceController {
             return Result.fail("发布状态有误");
         }
 
-        dataSourceService.updateStatus(request.getDataSourceId(), request.getDataSourceStatus());
+        dataSourceService.updateStatus(request.getId(), request.getDataSourceStatus());
         return Result.ok();
     }
 

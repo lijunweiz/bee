@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.unminded.bee.persistence.mapper.DictMapper">
+<mapper namespace="cn.unminded.bee.persistence.mapper.DictItemMapper">
 
     <sql id="criteria">
         <trim prefix="where" prefixOverrides="and | or">
@@ -10,6 +10,12 @@
             <if test="dictCode != null and dictCode != ''" >
                 and dict_code = #{dictCode}
             </if>
+            <if test="itemCode != null and itemCode != ''">
+                and item_code = #{itemCode}
+            </if>
+            <if test="itemName != null and itemName != ''">
+                and item_name = #{itemName}
+            </if>
             <if test="status != null and status != ''">
                 and `status` = #{status}
             </if>
@@ -17,18 +23,21 @@
     </sql>
 
     <select id="count" resultType="Long">
-        select count(1) from t_dict <include refid="criteria"/>
+        select count(1) from t_dict_item <include refid="criteria"/>
     </select>
 
-    <select id="list" resultType="DictEntity">
+    <select id="list" resultType="DictItemEntity">
         select id,
         dict_code,
-        dict_value,
+        item_code,
+        item_name,
+        item_value,
         status,
+        sort,
         description,
         created_time,
         updated_time
-        from t_dict
+        from t_dict_item
         <include refid="criteria"/>
         order by created_time desc
         <if test="(start != null and start >= 0) and (limit != null and limit > 0)">
@@ -36,34 +45,49 @@
         </if>
     </select>
 
-    <insert id="insert" parameterType="DictEntity" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="DictItemEntity" useGeneratedKeys="true" keyProperty="id">
         insert into
-        t_dict (`dict_code`,
-                `dict_value`,
+        t_dict_item (`dict_code`,
+                `item_code`,
+                `item_name`,
+                `item_value`,
                 `status`,
+                `sort`,
                 `description`,
                 `created_time`,
                 `updated_time`)
         values (
                 #{dictCode},
-                #{dictValue},
+                #{itemCode},
+                #{itemName},
+                #{itemValue},
                 IFNULL(#{status}, 0),
+                IFNULL(#{sort}, 1),
                 IFNULL(#{description}, ''),
                 IFNULL(#{createdTime}, now()),
                 IFNULL(#{updatedTime}, now())
                )
     </insert>
 
-    <update id="update" parameterType="DictEntity">
-        update t_dict set
+    <update id="update" parameterType="DictItemEntity">
+        update t_dict_item set
         <if test="dictCode != null and dictCode != ''">
             dict_code = #{dictCode},
         </if>
-        <if test="dictValue != null and dictValue != ''">
-            dict_value = #{dictValue},
+        <if test="itemCode != null and itemCode != ''">
+            item_code = #{itemCode},
+        </if>
+        <if test="itemName != null and itemName != ''">
+            item_name = #{itemName},
+        </if>
+        <if test="itemValue != null and itemValue != ''">
+            item_value = #{itemValue},
         </if>
         <if test="status != null">
             status = #{status},
+        </if>
+        <if test="sort != null">
+            sort = #{sort},
         </if>
         <if test="description != null and description != ''">
             description = #{description},
@@ -75,7 +99,13 @@
                 and id = #{id}
             </if>
             <if test="dictCode != null and dictCode != ''">
-                and dict_code = #{dictCode}
+                and dict_code = #{dictCode},
+            </if>
+            <if test="itemCode != null and itemCode != ''">
+                and item_code = #{itemCode},
+            </if>
+            <if test="itemName != null and itemName != ''">
+                and item_name = #{itemName}
             </if>
         </trim>
     </update>

@@ -6,25 +6,41 @@
         select count(*) from dual
     </select>
 
+    <sql id="field">
+        select id,
+               variable_name_en,
+               variable_name_zh,
+               variable_desc,
+               data_source_name,
+               data_source_type,
+               variable_status,
+               version,
+               author,
+               requirement_name,
+               created_time,
+               updated_time
+        from t_variable
+    </sql>
+
     <sql id="criteria">
         <trim prefix="where" prefixOverrides="and | or">
             <if test="true">
-                and variableStatus != 4
+                and variable_status != 4
             </if>
             <if test="variableNameEn != null and variableNameEn != ''">
-                and variableNameEn = #{variableNameEn}
+                and variable_name_en = #{variableNameEn}
             </if>
             <if test="dataSourceName != null and dataSourceName != ''">
-                and dataSourceName = #{dataSourceName}
+                and data_source_name = #{dataSourceName}
             </if>
             <if test="dataSourceType != null and dataSourceType != ''">
-                and dataSourceType = #{dataSourceType}
+                and data_source_type = #{dataSourceType}
             </if>
             <if test="startTime != null">
-                and updateTime >= #{startTime}
+                and updated_time >= #{startTime}
             </if>
             <if test="endTime != null">
-                and updateTime &lt; #{endTime}
+                and updated_time &lt; #{endTime}
             </if>
         </trim>
     </sql>
@@ -34,25 +50,13 @@
     </select>
 
     <select id="list" resultType="VariableEntity">
-        select variableId,
-            variableNameEn,
-            variableNameZh,
-            variableDesc,
-            dataSourceName,
-            dataSourceType,
-            variableStatus,
-            variableVersion,
-            author,
-            requirementName,
-            createdTime,
-            updateTime
-        from t_variable
+        <include refid="field"/>
         <include refid="criteria"/>
-        <if test="ascending != null and ascending">
-            order by updateTime asc
+        <if test="asc != null and asc">
+            order by created_time asc
         </if>
-        <if test="ascending != null and !ascending">
-            order by updateTime desc
+        <if test="desc != null and desc">
+            order by created_time desc
         </if>
         <if test="(start != null and start >= 0) and (limit != null and limit > 0)">
             limit #{start}, #{limit}
@@ -64,100 +68,77 @@
     </select>
 
     <select id="findLastOne" resultType="VariableEntity">
-        select variableId,
-            variableNameEn,
-            variableNameZh,
-            variableDesc,
-            dataSourceName,
-            dataSourceType,
-            variableStatus,
-            variableVersion,
-            author,
-            requirementName,
-            createdTime,
-            updateTime
-        from t_variable
+        <include refid="field"/>
             where
             <if test="variableNameEn != null and variableNameEn !=''">
-                variableNameEn = #{variableNameEn}
+                variable_name_en = #{variableNameEn}
             </if>
-            order by createdTime desc
+            order by created_time desc
             limit 1
     </select>
 
     <select id="findOneById" resultType="VariableEntity">
-        select variableId,
-            variableNameEn,
-            variableNameZh,
-            variableDesc,
-            dataSourceName,
-            dataSourceType,
-            variableStatus,
-            variableVersion,
-            author,
-            requirementName,
-            createdTime,
-            updateTime
-        from t_variable
+        <include refid="field"/>
             where
-            <if test="variableId != null and variableId > 0">
-                variableId = #{variableId} limit 1
+            <if test="id != null and id > 0">
+                id = #{id} limit 1
             </if>
     </select>
 
-    <insert id="insert" parameterType="VariableEntity" useGeneratedKeys="true" keyProperty="variableId">
+    <insert id="insert" parameterType="VariableEntity" useGeneratedKeys="true" keyProperty="id">
         insert into
-            t_variable (`variableNameEn`,
-                               `variableNameZh`,
-                               `variableDesc`,
-                               `dataSourceName`,
-                               `dataSourceType`,
-                               `variableStatus`,
-                               `variableVersion`,
+            t_variable (`variable_name_en`,
+                               `variable_name_zh`,
+                               `variable_desc`,
+                               `data_source_name`,
+                               `data_source_type`,
+                               `variable_status`,
+                               `version`,
                                `author`,
-                               `requirementName`,
-                               `createdTime`,
-                               `updateTime`)
+                               `requirement_name`,
+                               `created_time`,
+                               `updated_time`)
         values (#{variableNameEn},
                 #{variableNameZh},
                 #{variableDesc},
                 #{dataSourceName},
                 #{dataSourceType},
-                #{variableStatus},
-                #{variableVersion},
+                IFNULL(#{variableStatus}, 0),
+                IFNULL(#{version}, 0),
                 #{author},
-                #{requirementName},
-                #{createdTime},
-                #{updateTime})
+                IFNULL(#{requirementName}, ''),
+                IFNULL(#{createdTime}, now()),
+                IFNULL(#{updatedTime}, now()
+                )
     </insert>
 
     <update id="update" parameterType="VariableEntity">
         update t_variable set
             <if test="variableDesc != null">
-                variableDesc = #{variableDesc},
+                variable_desc = #{variableDesc},
             </if>
             <if test="dataSourceName != null and dataSourceName != ''">
-                dataSourceName = #{dataSourceName},
+                data_source_name = #{dataSourceName},
             </if>
             <if test="dataSourceType != null and dataSourceType != ''">
-                dataSourceType = #{dataSourceType},
+                data_source_type = #{dataSourceType},
             </if>
             <if test="variableStatus != null">
-                variableStatus = #{variableStatus},
+                variable_status = #{variableStatus},
             </if>
-            <if test="variableVersion != null">
-                variableVersion = #{variableVersion} + 1,
+            <if test="version != null">
+                version = #{version} + 1,
             </if>
             <if test="requirementName != null">
-                requirementName = #{requirementName},
+                requirement_name = #{requirementName},
             </if>
-            updateTime = #{updateTime}
+            updated_time = #{updatedTime}
         where
-            <if test="variableId != null  and variableId > 0">
-                variableId = #{variableId}
+            <if test="id != null  and id > 0">
+                id = #{id}
             </if>
-            <if test="variableId == null or variableId &gt; 0">
-                variableNameEn = #{variableNameEn}
+            <if test="id == null or id &gt; 0">
+                variable_name_en = #{variableNameEn}
             </if>
     </update>
 

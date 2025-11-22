@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class AddDataSourceRequest {
 
-    private Long dataSourceId;
+    private Long id;
 
     /**
      * 数据源名称

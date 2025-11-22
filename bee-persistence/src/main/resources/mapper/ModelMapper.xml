@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unminded.bee.persistence.mapper.ModelMapper">
+
+    <sql id="criteria">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="modelType != null and modelType != ''">
+                and model_type = #{modelType}
+            </if>
+            <if test="modelName != null and modelName != ''">
+                and model_name = #{modelName}
+            </if>
+            <if test="isLeaf != null">
+                and is_leaf = #{isLeaf}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="count" resultType="Long">
+        select count(1) from t_model <include refid="criteria"/>
+    </select>
+
+    <select id="list" resultType="ModelEntity">
+        select id,
+            model_type,
+            model_name,
+            is_leaf,
+            model_desc,
+            model_status,
+            operator,
+            created_time,
+            updated_time
+        from t_model
+        <include refid="criteria"/>
+        <if test="asc != null and asc">
+            order by created_time asc
+        </if>
+        <if test="desc != null and desc">
+            order by created_time desc
+        </if>
+        <if test="(start != null and start >= 0) and (limit != null and limit > 0)">
+            limit #{start}, #{limit}
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="ModelEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into
+            t_model (`model_type`,
+                     `model_name`,
+                     `is_leaf`,
+                     `model_desc`,
+                     `model_status`,
+                     `operator`,
+                     `created_time`,
+                     `updated_time`)
+        values (#{modelType},
+                #{modelName},
+                #{isLeaf},
+                #{modelDesc},
+                #{modelStatus},
+                #{operator},
+                IFNULL(#{createdTime}, now()),
+                IFNULL(#{updatedTime}, now()
+                )
+    </insert>
+
+    <update id="update">
+        update t_model
+            <trim prefix="set">
+                <if test="modelType != null">
+                    model_type = #{modelType},
+                </if>
+                <if test="modelName != null">
+                    model_name = #{modelName},
+                </if>
+                <if test="isLeaf != null">
+                    is_leaf = #{isLeaf},
+                </if>
+                <if test="modelDesc != null">
+                    model_desc = #{modelDesc},
+                </if>
+                <if test="modelStatus != null">
+                    model_status = #{modelStatus},
+                </if>
+                <if test="operator != null">
+                    operator = #{operator},
+                </if>
+            </trim>
+                updated_time = #{updatedTime}
+            where
+                id = #{id}
+    </update>
+
+
+</mapper>

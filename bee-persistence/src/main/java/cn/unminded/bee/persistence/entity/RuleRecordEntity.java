@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Data
 public class RuleRecordEntity {
 
-    private Long recordId;
+    private Long id;
 
     private Long modelId;
 

@@ -16,7 +16,7 @@ public class VariableEntity {
     /**
      * 变量id
      */
-    private Long variableId;
+    private Long id;
 
     /**
      * 变量英文名称
@@ -51,7 +51,7 @@ public class VariableEntity {
     /**
      * 变量版本
      */
-    private Integer variableVersion;
+    private Integer version;
 
     /**
      * 变量创建者
@@ -71,6 +71,6 @@ public class VariableEntity {
     /**
      * 更新时间
      */
-    private LocalDateTime updateTime;
+    private LocalDateTime updatedTime;
 
 }

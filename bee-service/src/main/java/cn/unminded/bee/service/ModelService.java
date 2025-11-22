@@ -2,7 +2,7 @@ package cn.unminded.bee.service;
 
 import cn.unminded.bee.persistence.criteria.DeleteModelCriteria;
 import cn.unminded.bee.persistence.criteria.QueryModelCriteria;
-import cn.unminded.bee.persistence.entity.ModelTreeEntity;
+import cn.unminded.bee.persistence.entity.ModelEntity;
 
 import java.util.List;
 
@@ -11,13 +11,13 @@ import java.util.List;
  */
 public interface ModelService {
 
-    List<ModelTreeEntity> modelTreeData(QueryModelCriteria criteria);
+    List<ModelEntity> modelTreeData(QueryModelCriteria criteria);
 
     Long count(QueryModelCriteria criteria);
 
-    Integer save(ModelTreeEntity modelTreeEntity);
+    Integer save(ModelEntity modelEntity);
 
-    Integer update(ModelTreeEntity modelTreeEntity);
+    Integer update(ModelEntity modelEntity);
 
     void delete(DeleteModelCriteria criteria);
 

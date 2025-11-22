@@ -12,7 +12,7 @@ public class QueryModelCriteria {
     /**
      * 模型id
      */
-    private Long modelId;
+    private Long id;
 
     /**
      * 模型类型
@@ -28,6 +28,10 @@ public class QueryModelCriteria {
      * 叶子节点，0-否，1-是
      */
     private Integer isLeaf;
+
+    private Boolean asc = false;
+
+    private Boolean desc = false;
 
     /**
      * 开始位置

@@ -49,6 +49,6 @@ public class UpdateVariableRequest {
     @VariableStatus
     private Integer variableStatus;
 
-    private Integer variableVersion;
+    private Integer version;
 
 }

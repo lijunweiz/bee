@@ -13,8 +13,8 @@ public class DeleteModelTreeItemRequest {
     /**
      * 模型id 数据更新时必须
      */
-    @NotNull(message = "modelId不能为null")
-    private Long modelId;
+    @NotNull(message = "id不能为null")
+    private Long id;
 
     /**
      * 叶子节点，0-否，1-是

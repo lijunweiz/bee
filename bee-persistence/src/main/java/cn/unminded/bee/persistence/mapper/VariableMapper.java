@@ -16,13 +16,13 @@ public interface VariableMapper {
 
     List<VariableEntity> list(QueryVariableCriteria criteria);
 
-    List<VariableEntity> list(@Param("startTime") String startTime, @Param("endTime") String endTime, @Param("pageSize") Integer pageSize, @Param("asc") boolean ascending);
+    List<VariableEntity> list(@Param("startTime") String startTime, @Param("endTime") String endTime, @Param("pageSize") Integer pageSize, @Param("asc") boolean asc);
 
     Long count(QueryVariableCriteria criteria);
 
     VariableEntity findLastOne(@Param("variableNameEn") String variableNameEn);
 
-    VariableEntity findOneById(@Param("variableId") Integer variableId);
+    VariableEntity findOneById(@Param("id") Integer variableId);
 
     Integer insert(VariableEntity entity);
 

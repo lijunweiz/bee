@@ -41,7 +41,7 @@ public class FlowEntity {
     /**
      * 更新时间
      */
-    private LocalDateTime updateTime;
+    private LocalDateTime updatedTime;
 
 
 }

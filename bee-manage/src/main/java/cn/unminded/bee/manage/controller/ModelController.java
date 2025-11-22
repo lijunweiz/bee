@@ -9,7 +9,7 @@ import cn.unminded.bee.manage.dto.model.request.ModelTreeItemRequest;
 import cn.unminded.bee.manage.dto.model.response.ModelTreeDataResponse;
 import cn.unminded.bee.persistence.criteria.DeleteModelCriteria;
 import cn.unminded.bee.persistence.criteria.QueryModelCriteria;
-import cn.unminded.bee.persistence.entity.ModelTreeEntity;
+import cn.unminded.bee.persistence.entity.ModelEntity;
 import cn.unminded.bee.service.ModelService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -41,24 +41,27 @@ public class ModelController {
         Map<String, Object> data = new HashMap<>();
         List<ModelTreeDataResponse> treeDataResult = new ArrayList<>();
         // 查询组
-        QueryModelCriteria groupCriteria = new QueryModelCriteria().setIsLeaf(ModelTreeNodeTypeEnum.NO.getCode());
-        List<ModelTreeEntity> list = modelService.modelTreeData(groupCriteria);
-        for (ModelTreeEntity entity : list) {
+        QueryModelCriteria groupCriteria = new QueryModelCriteria()
+                .setIsLeaf(ModelTreeNodeTypeEnum.NO.getCode())
+                .setAsc(true);
+        List<ModelEntity> list = modelService.modelTreeData(groupCriteria);
+        for (ModelEntity entity : list) {
             // 查询组成员
             QueryModelCriteria memberCriteria = new QueryModelCriteria()
                     .setModelType(entity.getModelType())
-                    .setIsLeaf(ModelTreeNodeTypeEnum.YES.getCode());
-            List<ModelTreeEntity> modelList = modelService.modelTreeData(memberCriteria);
+                    .setIsLeaf(ModelTreeNodeTypeEnum.YES.getCode())
+                    .setDesc(true);
+            List<ModelEntity> modelList = modelService.modelTreeData(memberCriteria);
             // 转换
             ModelTreeDataResponse item = new ModelTreeDataResponse();
-            item.setModelId(entity.getModelId());
+            item.setId(entity.getId());
             item.setLabel(entity.getModelType());
             item.setIsLeaf(ModelTreeNodeTypeEnum.NO.getCode());
             item.setModelDesc(entity.getModelDesc());
             if (CollectionUtils.isNotEmpty(modelList)) {
                 List<ModelTreeDataResponse> treeDataResponses = modelList.stream().map(x -> {
                     ModelTreeDataResponse children = new ModelTreeDataResponse();
-                    children.setModelId(x.getModelId());
+                    children.setId(x.getId());
                     children.setLabel(x.getModelName());
                     children.setIsLeaf(ModelTreeNodeTypeEnum.YES.getCode());
                     children.setModelDesc(x.getModelDesc());
@@ -89,12 +92,12 @@ public class ModelController {
                 .setIsLeaf(request.getIsLeaf())
                 .setModelType(request.getModelType())
                 .setModelName(request.getModelName());
-        List<ModelTreeEntity> list = modelService.modelTreeData(criteria);
+        List<ModelEntity> list = modelService.modelTreeData(criteria);
         if (CollectionUtils.isNotEmpty(list)) {
-            return Result.fail("已有相同的节点, 节点Id: " + list.get(0).getModelId());
+            return Result.fail("已有相同的节点, 节点Id: " + list.get(0).getId());
         }
 
-        ModelTreeEntity modelTreeEntity = new ModelTreeEntity()
+        ModelEntity modelEntity = new ModelEntity()
                 .setModelType(request.getModelType())
                 .setModelName(request.getModelName())
                 .setIsLeaf(request.getIsLeaf())
@@ -102,10 +105,10 @@ public class ModelController {
                 .setModelStatus(ModelStatusEnum.CREATE.getCode())
                 .setOperator(request.getOperator())
                 .setCreatedTime(LocalDateTime.now())
-                .setUpdateTime(LocalDateTime.now());
-        modelService.save(modelTreeEntity);
+                .setUpdatedTime(LocalDateTime.now());
+        modelService.save(modelEntity);
 
-        return Result.ok(modelTreeEntity.getModelId());
+        return Result.ok(modelEntity.getId());
     }
 
     @PostMapping("/update/tree/item")
@@ -118,9 +121,10 @@ public class ModelController {
             return Result.fail("modelId不能为null");
         }
 
-        ModelTreeEntity modelTreeEntity = new ModelTreeEntity();
-        BeanUtils.copyProperties(request, modelTreeEntity);
-        modelService.update(modelTreeEntity);
+        ModelEntity modelEntity = new ModelEntity();
+        BeanUtils.copyProperties(request, modelEntity);
+        modelEntity.setId(request.getModelId());
+        modelService.update(modelEntity);
 
         return Result.ok();
     }
@@ -128,7 +132,7 @@ public class ModelController {
     @PostMapping("/delete/tree/item")
     public Result delete(@Validated @RequestBody DeleteModelTreeItemRequest request) {
         DeleteModelCriteria criteria = new DeleteModelCriteria()
-                .setModelId(request.getModelId())
+                .setId(request.getId())
                 .setIsLeaf(request.getIsLeaf());
         modelService.delete(criteria);
         return Result.ok();

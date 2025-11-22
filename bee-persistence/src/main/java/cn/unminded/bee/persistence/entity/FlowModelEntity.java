@@ -20,7 +20,7 @@ public class FlowModelEntity {
     private Long flowId;
 
     /**
-     * modeId{@link ModelTreeEntity#getModelId()}
+     * modeId{@link ModelEntity#getId()}
      */
     private Long modelId;
 
@@ -32,6 +32,6 @@ public class FlowModelEntity {
     /**
      * 更新时间
      */
-    private LocalDateTime updateTime;
+    private LocalDateTime updatedTime;
 
 }

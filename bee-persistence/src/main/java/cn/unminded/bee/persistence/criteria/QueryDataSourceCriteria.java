@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Data
 public class QueryDataSourceCriteria {
 
-    private Long dataSourceId;
+    private Long id;
 
     private String dataSourceName;
 
@@ -18,7 +18,9 @@ public class QueryDataSourceCriteria {
 
     private Integer dataSourceStatus;
 
-    private boolean ascending = false;
+    private boolean asc = false;
+
+    private boolean desc = false;
 
     private Integer start;
 

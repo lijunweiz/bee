@@ -17,7 +17,9 @@ public class QueryVariableCriteria {
 
     private String dataSourceType;
 
-    private boolean ascending = false;
+    private Boolean asc = false;
+
+    private Boolean desc = false;
 
     private Integer start;
 

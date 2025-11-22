@@ -37,7 +37,7 @@ class DatasourceManagerTest {
 
     @Test
     void getMap() {
-        String sql = "select variableId, variableNameEn, variableStatus from t_variable where variableStatus = #{variableStatus} and author = #{author} and variableId in (#{list}) limit 1";
+        String sql = "select id, variable_name_en, variable_status from t_variable where variable_status = #{variableStatus} and author = #{author} and id in (#{list}) limit 1";
         Map<String, Object> args = Maps.newHashMap();
         args.put("variableStatus", 2);
         args.put("author", "admin");

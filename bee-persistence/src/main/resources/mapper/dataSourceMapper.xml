@@ -4,23 +4,26 @@
 
     <sql id="criteria">
         <trim prefix="where" prefixOverrides="and | or">
-            <if test="dataSourceId != null">
-                and dataSourceId = #{dataSourceId}
+            <if test="id != null">
+                and id = #{id}
             </if>
             <if test="dataSourceName != null and dataSourceName != ''">
-                and dataSourceName = #{dataSourceName}
+                and data_source_name = #{dataSourceName}
             </if>
             <if test="dataSourceType != null and dataSourceType != ''">
-                and dataSourceType = #{dataSourceType}
+                and data_source_type = #{dataSourceType}
             </if>
             <if test="dataSourceStatus != null">
-                and dataSourceStatus = #{dataSourceStatus}
+                and data_source_status = #{dataSourceStatus}
+            </if>
+            <if test="true">
+                and data_source_status != 4
             </if>
             <if test="startTime != null">
-                and updateTime >= #{startTime}
+                and updated_time >= #{startTime}
             </if>
             <if test="endTime != null">
-                and updateTime &lt; #{endTime}
+                and updated_Time &lt; #{endTime}
             </if>
         </trim>
     </sql>
@@ -30,76 +33,77 @@
     </select>
 
     <select id="list" resultType="DataSourceEntity">
-        select dataSourceId,
-            dataSourceName,
-            dataSourceType,
-            dataSourceStatus,
-            dataSourceDesc,
+        select id,
+            data_source_name,
+            data_source_type,
+            data_source_status,
+            data_source_desc,
             protocol,
             method,
             address,
-            queryParam,
+            query_param,
             headers,
-            requestBody,
-            extractVariable,
-            createdTime,
-            updateTime
+            request_body,
+            extract_variable,
+            created_time,
+            updated_time
         from t_data_source
         <include refid="criteria"/>
-        <if test="ascending != null and ascending">
-            order by updateTime asc
+        <if test="asc">
+            order by updated_time asc
         </if>
-        <if test="ascending != null and !ascending">
-            order by updateTime desc
+        <if test="desc">
+            order by updated_time desc
         </if>
         <if test="(start != null and start >= 0) and (limit != null and limit > 0)">
             limit #{start}, #{limit}
         </if>
     </select>
 
-    <insert id="insert" parameterType="DataSourceEntity" useGeneratedKeys="true" keyProperty="dataSourceId">
+    <insert id="insert" parameterType="DataSourceEntity" useGeneratedKeys="true" keyProperty="id">
         insert into
-            t_data_source (`dataSourceName`,
-                               `dataSourceType`,
-                               `dataSourceStatus`,
-                               `dataSourceDesc`,
+            t_data_source (`data_source_name`,
+                               `data_source_type`,
+                               `data_source_status`,
+                               `data_source_desc`,
                                `protocol`,
                                `method`,
                                `address`,
-                               `queryParam`,
+                               `query_param`,
                                `headers`,
-                               `requestBody`,
-                               `extractVariable`,
-                               `createdTime`,
-                               `updateTime`)
+                               `request_body`,
+                               `extract_variable`,
+                               `created_time`,
+                               `updated_time`)
         values (#{dataSourceName},
                 #{dataSourceType},
-                #{dataSourceStatus},
-                #{dataSourceDesc},
-                #{protocol},
-                #{method},
-                #{address},
-                #{queryParam},
-                #{headers},
-                #{requestBody},
-                #{extractVariable},
-                #{createdTime},
-                #{updateTime})
+                IFNULL(#{dataSourceStatus}, 0),
+                IFNULL(#{dataSourceDesc}, ''),
+                IFNULL(#{protocol}, ''),
+                IFNULL(#{method}, ''),
+                IFNULL(#{address}, ''),
+                IFNULL(#{queryParam}, ''),
+                IFNULL(#{headers}, ''),
+                IFNULL(#{requestBody}, ''),
+                IFNULL(#{extractVariable}, ''),
+                IFNULL(#{createdTime}, now()),
+                IFNULL(#{updatedTime}, now())
+            )
     </insert>
 
-    <update id="update" parameterType="cn.unminded.bee.persistence.entity.DataSourceEntity">
+    <update id="update" parameterType="DataSourceEntity">
         update t_data_source set
         <if test="dataSourceName != null and dataSourceName != ''">
-            dataSourceName = #{dataSourceName},
+            data_source_name = #{dataSourceName},
         </if>
         <if test="dataSourceType != null and dataSourceType != ''">
-            dataSourceType = #{dataSourceType},
+            data_source_type = #{dataSourceType},
         </if>
         <if test="dataSourceStatus != null">
-            dataSourceStatus = #{dataSourceStatus},
+            data_source_status = #{dataSourceStatus},
         </if>
         <if test="dataSourceDesc != null and dataSourceDesc != ''">
-            dataSourceDesc = #{dataSourceDesc},
+            data_source_desc = #{dataSourceDesc},
         </if>
         <if test="protocol != null">
             protocol = #{protocol},
@@ -111,21 +115,21 @@
             address = #{address},
         </if>
         <if test="queryParam != null">
-            queryParam = #{queryParam},
+            query_param = #{queryParam},
         </if>
         <if test="headers != null">
             headers = #{headers},
         </if>
         <if test="requestBody != null">
-            requestBody = #{requestBody},
+            request_body = #{requestBody},
         </if>
         <if test="extractVariable != null">
-            extractVariable = #{extractVariable},
+            extract_variable = #{extractVariable},
         </if>
-        updateTime = #{updateTime}
+        updated_time = #{updatedTime}
         where
-        <if test="dataSourceId != null  and dataSourceId > 0">
-            dataSourceId = #{dataSourceId}
+        <if test="id != null  and id > 0">
+            id = #{id}
         </if>
     </update>
 

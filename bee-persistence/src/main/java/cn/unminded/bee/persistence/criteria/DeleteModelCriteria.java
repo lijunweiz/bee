@@ -12,7 +12,7 @@ public class DeleteModelCriteria {
     /**
      * 模型id
      */
-    private Long modelId;
+    private Long id;
 
     /**
      * 叶子节点，0-否，1-是

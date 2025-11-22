@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
  */
 @Accessors(chain = true)
 @Data
-public class ModelTreeEntity {
+public class ModelEntity {
     /**
      * 模型id
      */
-    private Long modelId;
+    private Long id;
 
     /**
      * 模型类型
@@ -59,6 +59,6 @@ public class ModelTreeEntity {
     /**
      * 更新时间
      */
-    private LocalDateTime updateTime;
+    private LocalDateTime updatedTime;
 
 }

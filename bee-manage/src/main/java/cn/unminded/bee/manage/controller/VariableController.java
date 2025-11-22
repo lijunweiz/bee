@@ -73,11 +73,11 @@ public class VariableController {
                 .setDataSourceType(request.getDataSourceType())
                 .setDataSourceName(request.getDataSourceName())
                 .setVariableStatus(VariableStatusEnum.DEFAULT.getStatus())
-                .setVariableVersion(BeeConstant.ZERO)
+                .setVersion(BeeConstant.ZERO)
                 .setAuthor(request.getAuthor())
                 .setRequirementName(request.getRequirementName())
                 .setCreatedTime(LocalDateTime.now())
-                .setUpdateTime(LocalDateTime.now());
+                .setUpdatedTime(LocalDateTime.now());
         boolean save = variableService.save(entity);
         return save ? Result.ok() : Result.fail();
     }
@@ -98,10 +98,10 @@ public class VariableController {
                 .setDataSourceType(Strings.nullToEmpty(request.getDataSourceType()))
                 .setDataSourceName(request.getDataSourceName())
                 .setVariableStatus(request.getVariableStatus())
-                .setVariableVersion(request.getVariableVersion())
+                .setVersion(request.getVersion())
                 .setAuthor(request.getAuthor())
                 .setRequirementName(request.getRequirementName())
-                .setUpdateTime(LocalDateTime.now());
+                .setUpdatedTime(LocalDateTime.now());
         boolean update = variableService.update(entity);
         return update ? Result.ok() : Result.fail();
     }
@@ -112,7 +112,7 @@ public class VariableController {
                 .setVariableNameEn(request.getVariableNameEn())
                 .setAuthor(request.getAuthor())
                 .setVariableStatus(request.getVariableStatus())
-                .setUpdateTime(LocalDateTime.now());
+                .setUpdatedTime(LocalDateTime.now());
         boolean update = variableService.update(entity);
         return update ? Result.ok() : Result.fail();
     }

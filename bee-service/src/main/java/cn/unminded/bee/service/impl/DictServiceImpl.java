@@ -36,8 +36,8 @@ public class DictServiceImpl implements DictService {
         if (Objects.isNull(dictEntity.getCreatedTime())) {
             dictEntity.setCreatedTime(LocalDateTime.now());
         }
-        if (Objects.isNull(dictEntity.getUpdateTime())) {
-            dictEntity.setUpdateTime(LocalDateTime.now());
+        if (Objects.isNull(dictEntity.getUpdatedTime())) {
+            dictEntity.setUpdatedTime(LocalDateTime.now());
         }
 
         return dictMapper.insert(dictEntity);
@@ -46,8 +46,8 @@ public class DictServiceImpl implements DictService {
     @Override
     public Integer update(DictEntity dictEntity) {
         Objects.requireNonNull(dictEntity, "dictEntity 不能为null");
-        if (Objects.isNull(dictEntity.getUpdateTime())) {
-            dictEntity.setUpdateTime(LocalDateTime.now());
+        if (Objects.isNull(dictEntity.getUpdatedTime())) {
+            dictEntity.setUpdatedTime(LocalDateTime.now());
         }
 
         return dictMapper.update(dictEntity);

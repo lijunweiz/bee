@@ -12,7 +12,7 @@ public class QueryDictItemResponse {
     /**
      * 项编码
      */
-    private String itemCode;
+    private String itemName;
 
     /**
      * 项值

@@ -19,6 +19,10 @@ public class BeeConstant {
 
     public static final Integer ZERO = 0;
 
+    public static final Integer YES = 1;
+
+    public static final Integer NO = 0;
+
     public static final String EMPTY_STRING = StringUtils.EMPTY;
 
     /** bee开始开发时间 */

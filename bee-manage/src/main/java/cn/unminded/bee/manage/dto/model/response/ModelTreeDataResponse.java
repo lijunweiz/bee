@@ -14,7 +14,7 @@ import java.util.List;
 public class ModelTreeDataResponse {
 
     @JsonProperty("id")
-    private Long modelId;
+    private Long id;
 
     @JsonProperty("label")
     private String label;
