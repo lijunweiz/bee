@@ -63,7 +63,7 @@
                 #{modelStatus},
                 #{operator},
                 IFNULL(#{createdTime}, now()),
-                IFNULL(#{updatedTime}, now()
+                IFNULL(#{updatedTime}, now())
                 )
     </insert>
 

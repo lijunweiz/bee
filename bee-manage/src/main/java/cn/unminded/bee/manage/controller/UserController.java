@@ -4,9 +4,9 @@ package cn.unminded.bee.manage.controller;
 import cn.unminded.bee.common.annotation.Log;
 import cn.unminded.bee.common.util.IdGenerator;
 import cn.unminded.bee.common.Result;
-import cn.unminded.bee.manage.dto.user.UserInfo;
 import cn.unminded.bee.manage.constant.ManageLoginEnum;
 import cn.unminded.bee.manage.constant.UserRoleEnum;
+import cn.unminded.bee.turn.dto.user.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 

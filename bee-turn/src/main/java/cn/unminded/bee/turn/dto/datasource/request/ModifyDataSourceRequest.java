@@ -1,0 +1,21 @@
+package cn.unminded.bee.turn.dto.datasource.request;
+
+import lombok.Data;
+
+import javax.validation.constraints.NotNull;
+
+/**
+ * @author lijunwei
+ */
+@Data
+public class ModifyDataSourceRequest {
+
+    @NotNull(message = "数据源id不能为空")
+    private Long id;
+
+    /**
+     * 数据源状态
+     */
+    private Integer dataSourceStatus;
+
+}

@@ -15,6 +15,7 @@
         <module>bee-api</module>
         <module>bee-common</module>
         <module>bee-manage</module>
+        <module>bee-turn</module>
     </modules>
 
     <properties>

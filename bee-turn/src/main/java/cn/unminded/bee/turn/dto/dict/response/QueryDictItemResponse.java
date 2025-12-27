@@ -1,0 +1,21 @@
+package cn.unminded.bee.turn.dto.dict.response;
+
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+/**
+ * @author lijunwei
+ */
+@Accessors(chain = true)
+@Data
+public class QueryDictItemResponse {
+    /**
+     * 项编码
+     */
+    private String itemName;
+
+    /**
+     * 项值
+     */
+    private String itemValue;
+}

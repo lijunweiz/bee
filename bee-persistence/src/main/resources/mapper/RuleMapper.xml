@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unminded.bee.persistence.mapper.RuleMapper">
+
+    <sql id="criteria">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="modelId != null">
+                and model_id = #{modelId}
+            </if>
+            <if test="modelType != null and modelType != ''">
+                and model_type = #{modelType}
+            </if>
+            <if test="modelName != null and modelName != ''">
+                and model_name = #{modelName}
+            </if>
+            <if test="ruleGroup != null">
+                and rule_group = #{ruleGroup}
+            </if>
+            <if test="ruleName != null and ruleName != ''">
+                and rule_name = #{ruleName}
+            </if>
+            <if test="status != null">
+                and `status` = #{status}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="list" resultType="RuleRecordEntity">
+        select id,
+            model_id,
+            model_type,
+            model_name,
+            rule_group,
+            rule_name,
+            rule_content,
+            version,
+            status,
+            description,
+            created_time,
+            updated_time
+        from t_rule
+        <include refid="criteria"/>
+        order by created_time
+    </select>
+
+    <insert id="insert" parameterType="RuleRecordEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into
+            t_rule (`model_id`,
+                    `model_type`,
+                     `model_name`,
+                     `rule_group`,
+                     `rule_name`,
+                     `rule_content`,
+                     `version`,
+                     `status`,
+                     `description`,
+                     `created_time`,
+                     `updated_time`)
+        values (#{modelId},
+                #{modelType},
+                #{modelName},
+                #{ruleType},
+                #{ruleName},
+                #{ruleContent},
+                IFNULL(#{version}, '1'),
+                IFNULL(#{status}, 0),
+                IFNULL(#{description}, ''),
+                IFNULL(#{createdTime}, now()),
+                IFNULL(#{updatedTime}, now())
+                )
+    </insert>
+
+    <update id="update">
+        update t_rule
+            <trim prefix="set">
+                <if test="modelType != null and modelType != ''">
+                    model_type = #{modelType},
+                </if>
+                <if test="modelName != null and modelName != ''">
+                    model_name = #{modelName},
+                </if>
+                <if test="ruleName != null and ruleName != ''">
+                    rule_name = #{ruleName},
+                </if>
+                <if test="ruleContent != null">
+                    rule_content = #{ruleContent},
+                </if>
+                <if test="version != null and version != ''">
+                    version = #{version},
+                </if>
+                <if test="status != null">
+                    `status` = #{status},
+                </if>
+                <if test="description != null  and description != ''">
+                    `description` = #{description},
+                </if>
+            </trim>
+                updated_time = #{updatedTime}
+            where
+                id = #{id}
+    </update>
+
+
+</mapper>

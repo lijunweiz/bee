@@ -4,13 +4,13 @@ import cn.unminded.bee.common.Result;
 import cn.unminded.bee.common.annotation.Log;
 import cn.unminded.bee.common.constant.ModelStatusEnum;
 import cn.unminded.bee.common.constant.ModelTreeNodeTypeEnum;
-import cn.unminded.bee.manage.dto.model.request.DeleteModelTreeItemRequest;
-import cn.unminded.bee.manage.dto.model.request.ModelTreeItemRequest;
-import cn.unminded.bee.manage.dto.model.response.ModelTreeDataResponse;
 import cn.unminded.bee.persistence.criteria.DeleteModelCriteria;
 import cn.unminded.bee.persistence.criteria.QueryModelCriteria;
 import cn.unminded.bee.persistence.entity.ModelEntity;
 import cn.unminded.bee.service.ModelService;
+import cn.unminded.bee.turn.dto.model.request.DeleteModelTreeItemRequest;
+import cn.unminded.bee.turn.dto.model.request.ModelTreeItemRequest;
+import cn.unminded.bee.turn.dto.model.response.ModelTreeDataResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -149,7 +149,8 @@ public class ModelController {
                 .setLimit(limit)
                 .setIsLeaf(ModelTreeNodeTypeEnum.YES.getCode())
                 .setModelType(modelType)
-                .setModelName(modelName);
+                .setModelName(modelName)
+                .setDesc(true);
         data.put("list", modelService.modelTreeData(itemCriteria));// 表格数据
         data.put("total", modelService.count(itemCriteria));
         return Result.ok(data);

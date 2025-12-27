@@ -23,6 +23,10 @@ public class Result {
         this(null, null, null);
     }
 
+    public Result(Integer code, Object data) {
+        this(code, null, data);
+    }
+
     public Result(Integer code, String desc, Object data) {
         this.code = code;
         this.desc = desc;
