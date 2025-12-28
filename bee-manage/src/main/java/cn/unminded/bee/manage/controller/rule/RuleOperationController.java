@@ -3,11 +3,18 @@ package cn.unminded.bee.manage.controller.rule;
 import cn.unminded.bee.common.Result;
 import cn.unminded.bee.common.annotation.Log;
 import cn.unminded.bee.common.constant.RuleGroupEnum;
+import cn.unminded.bee.common.util.BeeExceptionUtil;
 import cn.unminded.bee.core.rule.RuleOperator;
+import cn.unminded.bee.core.rule.definition.RuleContent;
 import cn.unminded.bee.core.util.BeeUtils;
+import cn.unminded.bee.persistence.criteria.QueryModelCriteria;
 import cn.unminded.bee.persistence.criteria.QueryRuleCriteria;
+import cn.unminded.bee.persistence.entity.ModelEntity;
 import cn.unminded.bee.persistence.entity.RuleRecordEntity;
+import cn.unminded.bee.service.ModelService;
 import cn.unminded.bee.service.rule.RuleOperationService;
+import cn.unminded.bee.turn.dto.rule.request.RuleContentDto;
+import cn.unminded.bee.turn.dto.rule.request.RuleRecordDto;
 import cn.unminded.bee.turn.dto.rule.response.RuleSetTreeDataResponse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -17,6 +24,8 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,6 +41,9 @@ public class RuleOperationController {
 
     @Resource
     private RuleOperationService ruleOperationService;
+
+    @Resource
+    private ModelService modelService;
 
     @Log("获取规则运算符")
     @GetMapping("/operator")
@@ -96,26 +108,56 @@ public class RuleOperationController {
     }
 
     @Log("规则详情")
-    @GetMapping("/list/detail")
+    @GetMapping("/detail")
     public Result ruleDetail(@RequestParam(name = "ruleId", required = false) Long ruleId, @RequestParam(name = "ruleName", required = false) String ruleName) {
         List<RuleRecordEntity> ruleList = ruleOperationService.query(new QueryRuleCriteria().setId(ruleId).setRuleName(ruleName));
         if (CollectionUtils.isNotEmpty(ruleList)) {
-            return Result.ok(ruleList.get(0));
+            RuleContentDto dto = new RuleContentDto();
+            dto.setRuleId(ruleList.get(0).getId());
+            dto.setModelId(ruleList.get(0).getModelId());
+            dto.setRuleContent(JSON.parseObject(ruleList.get(0).getRuleContent(),  RuleContent.class));
+            return Result.ok(dto);
         }
 
-        return Result.ok();
+        return Result.fail();
     }
 
     @Log("创建规则集")
     @PostMapping("/create")
-    public Result createRuleSet(@RequestBody Map<String, Object> params) {
+    public Result createRuleSet(@Valid @RequestBody RuleRecordDto dto) {
+        List<ModelEntity> modelEntityList = modelService.modelTreeData(new QueryModelCriteria().setId(dto.getModelId()));
+        BeeExceptionUtil.nullOrEmptyToThrow(modelEntityList, "modelId无效");
+
+        RuleRecordEntity entity = new RuleRecordEntity();
+        entity.setModelId(dto.getModelId());
+        entity.setModelType(modelEntityList.get(0).getModelType());
+        entity.setModelName(modelEntityList.get(0).getModelName());
+        entity.setRuleGroup(dto.getRuleGroup());
+        entity.setRuleName(dto.getRuleName());
+        entity.setDescription(dto.getDescription());
+        entity.setCreatedTime(LocalDateTime.now());
+        entity.setUpdatedTime(LocalDateTime.now());
+        ruleOperationService.save(entity);
 
         return Result.ok();
     }
 
-    @Log("创建规则集")
-    @PostMapping("/create/detail")
-    public Result createRuleDetail(@RequestBody Map<String, Object> params) {
+    @Log("更新规则集")
+    @PostMapping("/update")
+    public Result createRuleDetail(@Valid @RequestBody RuleContentDto dto) {
+        BeeExceptionUtil.nullOrEmptyToThrow(dto.getRuleId(), "ruleId不能为空");
+        List<RuleRecordEntity> ruleRecordEntityList = ruleOperationService.query(new QueryRuleCriteria().setId(dto.getRuleId()));
+        BeeExceptionUtil.nullOrEmptyToThrow(ruleRecordEntityList, "ruleId无效");
+        List<ModelEntity> modelEntityList = modelService.modelTreeData(new QueryModelCriteria().setId(dto.getModelId()));
+        BeeExceptionUtil.nullOrEmptyToThrow(modelEntityList, "modelId无效");
+
+        RuleRecordEntity entity = new RuleRecordEntity();
+        entity.setId(dto.getRuleId());
+        entity.setRuleContent(JSON.toJSONString(dto.getRuleContent()));
+        entity.setDescription(dto.getDescription());
+        entity.setUpdatedTime(LocalDateTime.now());
+
+        ruleOperationService.update(entity);
 
         return Result.ok();
     }

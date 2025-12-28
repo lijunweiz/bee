@@ -14,6 +14,6 @@ public interface RuleOperationService {
 
     Integer save(RuleRecordEntity ruleRecordEntity);
 
-    Integer update(RuleRecordEntity dictItemEntity);
+    Integer update(RuleRecordEntity ruleRecordEntity);
 
 }

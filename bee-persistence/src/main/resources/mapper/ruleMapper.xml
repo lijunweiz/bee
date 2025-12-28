@@ -62,7 +62,7 @@
         values (#{modelId},
                 #{modelType},
                 #{modelName},
-                #{ruleType},
+                #{ruleGroup},
                 #{ruleName},
                 #{ruleContent},
                 IFNULL(#{version}, '1'),

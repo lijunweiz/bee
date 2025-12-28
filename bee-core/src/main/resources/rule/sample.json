@@ -1,0 +1,76 @@
+{
+  "rules": [
+    {
+      "nodeId": "48a4fe59-82d0-4191-949b-29040d98c827",
+      "condition": {
+        "operator": "AND",
+        "children": [
+          {
+            "field": "firstLoanTime",
+            "op": ">=",
+            "itemDesc": "等于",
+            "value": "10"
+          },
+          {
+            "field": "varScore",
+            "op": ">=",
+            "itemDesc": "等于",
+            "value": "80"
+          },
+          {
+            "operator": "OR",
+            "children": [
+              {
+                "field": "waitTime11",
+                "op": "==",
+                "itemDesc": "等于",
+                "value": "10"
+              },
+              {
+                "field": "lastLoanTime",
+                "op": "<=",
+                "itemDesc": "等于",
+                "value": "10"
+              }
+            ]
+          }
+        ]
+      },
+      "action": {
+        "type": "assign",
+        "field": "decisionResult",
+        "operator": "=",
+        "itemDesc": "赋值",
+        "value": "通过"
+      }
+    },
+    {
+      "nodeId": "9e315ec9-7fed-4190-9456-83eed68efb90",
+      "condition": {
+        "operator": "AND",
+        "children": [
+          {
+            "field": "firstLoanTime",
+            "op": ">=",
+            "itemDesc": "等于",
+            "value": "30"
+          }
+        ]
+      },
+      "action": {
+        "type": "assign",
+        "field": "decisionResult",
+        "operator": "=",
+        "itemDesc": "赋值",
+        "value": "通过"
+      }
+    }
+  ],
+  "elseAction": {
+    "type": "assign",
+    "field": "decisionResult",
+    "operator": "=",
+    "itemDesc": "赋值",
+    "value": "拒绝"
+  }
+}
