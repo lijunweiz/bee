@@ -27,6 +27,9 @@ public class LogInterceptor implements Interceptor {
 
     private static final Charset DEFAULT_CHAR_SET = StandardCharsets.UTF_8;
 
+    /** 最大打印 body 大小（1MB），超过则设为null */
+    private static final long MAX_BODY_SIZE = 1024 * 1024L;
+
     @Override
     public Response intercept(Chain chain) throws IOException {
         long start = System.currentTimeMillis();
@@ -57,10 +60,10 @@ public class LogInterceptor implements Interceptor {
                 charset = contentType.charset(DEFAULT_CHAR_SET);
             }
 
-            body = buffer.readString(charset);
+            body = buffer.size() > MAX_BODY_SIZE ? null : buffer.readString(charset);
         }
 
-        logger.info("request method: {}, url: {}, headers: {}, body:{}", request.method(), request.url(), JSON.toJSONString(headers), body);
+        logger.info("request method: {}, url: {}, headers: {}, body: {}", request.method(), request.url(), JSON.toJSONString(headers), body);
     }
 
     private void logResponse(Response response, long cost) throws IOException {
@@ -82,7 +85,7 @@ public class LogInterceptor implements Interceptor {
                 charset = contentType.charset(DEFAULT_CHAR_SET);
             }
 
-            body = buffer.clone().readString(charset);
+            body = buffer.size() > MAX_BODY_SIZE ? null : buffer.clone().readString(charset);
         }
 
         logger.info("response code: {}, message: {}, url: {}, headers: {}, body: {}, 耗时: {}ms", response.code(),

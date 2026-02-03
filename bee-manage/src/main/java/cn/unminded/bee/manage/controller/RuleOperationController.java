@@ -1,4 +1,4 @@
-package cn.unminded.bee.manage.controller.rule;
+package cn.unminded.bee.manage.controller;
 
 import cn.unminded.bee.common.Result;
 import cn.unminded.bee.common.annotation.Log;
@@ -12,7 +12,7 @@ import cn.unminded.bee.persistence.criteria.QueryRuleCriteria;
 import cn.unminded.bee.persistence.entity.ModelEntity;
 import cn.unminded.bee.persistence.entity.RuleRecordEntity;
 import cn.unminded.bee.service.ModelService;
-import cn.unminded.bee.service.rule.RuleOperationService;
+import cn.unminded.bee.service.RuleOperationService;
 import cn.unminded.bee.turn.dto.rule.request.RuleContentDto;
 import cn.unminded.bee.turn.dto.rule.request.RuleRecordDto;
 import cn.unminded.bee.turn.dto.rule.response.RuleSetTreeDataResponse;

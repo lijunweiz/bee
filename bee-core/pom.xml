@@ -77,6 +77,11 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
         </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/com.github.javaparser/javaparser-symbol-solver-core -->
+        <dependency>
+            <groupId>com.github.javaparser</groupId>
+            <artifactId>javaparser-symbol-solver-core</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

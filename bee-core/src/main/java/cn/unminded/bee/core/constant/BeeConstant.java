@@ -19,5 +19,7 @@ public class BeeConstant {
 
     public static final long DEFAULT_TIMEOUT = 5;
 
+    public static final String DEFAULT_FUNC_PACKAGE = "package cn.unminded.bee.core.func;";
+
 
 }

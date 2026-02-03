@@ -88,4 +88,8 @@ public class RuleExecutor {
         ruleEngine.invalidateCache(expression);
     }
 
+    public RuleEngine getRuleEngine() {
+        return ruleEngine;
+    }
+
 }

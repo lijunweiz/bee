@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.unminded.bee.persistence.mapper.FunctionMapper">
+
+    <sql id="criteria">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="funcNameEn != null and funcNameEn != ''">
+                and func_name_en = #{funcNameEn}
+            </if>
+            <if test="funcType != null">
+                and func_type = #{funcType}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="count" resultType="Long">
+        select count(1) from t_function <include refid="criteria"/>
+    </select>
+
+    <select id="list" resultType="FunctionEntity">
+        select id,
+            func_name_en,
+            func_name_zh,
+            func_type,
+            func,
+            description,
+            status,
+            version,
+            created_time,
+            updated_time
+        from t_function
+        <include refid="criteria"/>
+        <if test="asc">
+            order by updated_time asc
+        </if>
+        <if test="desc">
+            order by updated_time desc
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="FunctionEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into
+            t_function (`func_name_en`,
+                               `func_name_zh`,
+                               `func_type`,
+                               `func`,
+                               `description`,
+                               `status`,
+                               `version`,
+                               `created_time`,
+                               `updated_time`)
+        values (#{funcNameEn},
+                #{funcNameZh},
+                IFNULL(#{funcType}, 1),
+                #{func},
+                IFNULL(#{description}, ''),
+                IFNULL(#{status}, 0),
+                IFNULL(#{version}, 0),
+                IFNULL(#{createdTime}, now()),
+                IFNULL(#{updatedTime}, now())
+            )
+    </insert>
+
+    <update id="update" parameterType="FunctionEntity">
+        update t_function
+            <set>
+                <if test="status != null">
+                    status = #{status},
+                </if>
+                <if test="updatedTime != null">
+                    updated_time = #{updatedTime}
+                </if>
+            </set>
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="funcNameEn != null and funcNameEn != ''">
+                and func_name_en = #{funcNameEn}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="version != null">
+                and version = #{version}
+            </if>
+        </where>
+    </update>
+
+
+</mapper>

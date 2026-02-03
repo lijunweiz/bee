@@ -1,4 +1,4 @@
-package cn.unminded.bee.service.rule;
+package cn.unminded.bee.service;
 
 import cn.unminded.bee.persistence.criteria.QueryRuleCriteria;
 import cn.unminded.bee.persistence.entity.RuleRecordEntity;

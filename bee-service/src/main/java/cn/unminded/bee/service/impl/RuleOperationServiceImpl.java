@@ -4,7 +4,7 @@ import cn.unminded.bee.common.exception.BeeException;
 import cn.unminded.bee.persistence.criteria.QueryRuleCriteria;
 import cn.unminded.bee.persistence.entity.RuleRecordEntity;
 import cn.unminded.bee.persistence.mapper.RuleMapper;
-import cn.unminded.bee.service.rule.RuleOperationService;
+import cn.unminded.bee.service.RuleOperationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

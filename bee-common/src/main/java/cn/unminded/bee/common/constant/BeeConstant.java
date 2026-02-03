@@ -28,4 +28,15 @@ public class BeeConstant {
     /** bee开始开发时间 */
     public static final String BEE_START_TIME = "2024-01-01 00:00:00";
 
+    /** 系统内置1 */
+    public static final Integer FUNCTION_TYPE1 = 1;
+    /** 自定义2 */
+    public static final Integer FUNCTION_TYPE2 = 2;
+    /** 第三方扩展3 */
+    public static final Integer FUNCTION_TYPE3 = 3;
+    /** 停用状态0 */
+    public static final Integer FUNCTION_STATUS0 = 0;
+    /** 启用状态1 */
+    public static final Integer FUNCTION_STATUS1 = 1;
+
 }

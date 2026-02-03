@@ -12,6 +12,10 @@ public class BeeCoreExceptionUtil {
         throw new UnsupportedOperationException();
     }
 
+    public static BeeCoreException build(Throwable cause) {
+        return new BeeCoreException(cause);
+    }
+
     public static BeeCoreException build(String message) {
         return new BeeCoreException(message);
     }
@@ -22,6 +26,12 @@ public class BeeCoreExceptionUtil {
 
     public static void nullOrEmptyToThrow(Object obj, String message) {
         if (ObjectUtils.isEmpty(obj)) {
+            throw new BeeCoreException(message);
+        }
+    }
+
+    public static void trueToThrow(boolean condition, String message) {
+        if (condition) {
             throw new BeeCoreException(message);
         }
     }

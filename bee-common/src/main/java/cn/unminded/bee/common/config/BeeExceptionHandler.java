@@ -8,6 +8,7 @@ import org.apache.catalina.connector.ClientAbortException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -27,7 +28,8 @@ public class BeeExceptionHandler {
         String error = null;
         if (e instanceof ClientAbortException
                 || e instanceof SocketException
-                || e instanceof TimeoutException) {
+                || e instanceof TimeoutException
+                ||  e instanceof HttpRequestMethodNotSupportedException) {
             error = e.getMessage();
         } else {
             error = ExceptionUtils.getStackTrace(e);

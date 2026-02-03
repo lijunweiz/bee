@@ -1,6 +1,7 @@
 package cn.unminded.bee.core.engine;
 
 import cn.unminded.bee.core.exception.BeeCoreException;
+import cn.unminded.bee.core.util.BeeUtils;
 import com.googlecode.aviator.*;
 import com.googlecode.aviator.runtime.JavaMethodReflectionFunctionMissing;
 
@@ -15,9 +16,11 @@ public class AviatorRuleEngine implements RuleEngine {
     private static final AviatorEvaluatorInstance INSTANCE = AviatorEvaluator.getInstance();
 
     /**
-     * 缓存编译结果
+     * 是否缓存编译结果
      */
-    private static final boolean CACHED_ENABLE = true;
+    private static final boolean CACHED_ENABLE = BeeUtils.getBeeProperties()
+            .getOrDefault("bee.aviator.cached.enable", "true")
+            .equals("true");
 
     /**
      * 缓存容量
