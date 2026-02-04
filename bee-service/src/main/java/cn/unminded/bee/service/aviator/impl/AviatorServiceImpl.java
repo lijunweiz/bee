@@ -2,6 +2,7 @@ package cn.unminded.bee.service.aviator.impl;
 
 import cn.unminded.bee.common.constant.BeeConstant;
 import cn.unminded.bee.core.RuleExecutor;
+import cn.unminded.bee.core.constant.AviatorFunctionEnum;
 import cn.unminded.bee.core.engine.AviatorRuleEngine;
 import cn.unminded.bee.core.engine.compiler.DynamicCompiler;
 import cn.unminded.bee.core.util.BeeCoreExceptionUtil;
@@ -20,10 +21,13 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static cn.unminded.bee.core.constant.BeeConstant.DEFAULT_FUNC_PACKAGE;
 
@@ -45,28 +49,49 @@ public class AviatorServiceImpl implements AviatorService {
     @Resource
     private FunctionMapper functionMapper;
 
+    /**
+     * 自定义函数列表
+     */
+    private List<AviatorFuncResponse> aviatorFuncResponseList = Lists.newArrayList();
+
+    @PostConstruct
+    void loadFunFromDb() {
+        this.aviatorFuncResponseList = this.loadFromDb();
+    }
+
     @Override
     public Map<String, List<AviatorFuncResponse>> funMapList() {
         Map<String, List<AviatorFuncResponse>> funMapList = Maps.newHashMap();
         List<AviatorFuncResponse> sysFuncList = Lists.newArrayList();
-        List<AviatorFuncResponse> beeFuncList = Lists.newArrayList();
         for (String name : AVIATOR_EVALUATOR_INSTANCE.getFuncMap().keySet()) {
             if (name.startsWith("bee.")) {
-                beeFuncList.add(new AviatorFuncResponse().setFuncNameEn(name).setFuncType(BeeConstant.FUNCTION_TYPE2));
+                // this.aviatorFuncResponseList
             } else {
-                sysFuncList.add(new AviatorFuncResponse().setFuncNameEn(name).setFuncType(BeeConstant.FUNCTION_TYPE1));
+                AviatorFuncResponse aviatorFuncResponse = new AviatorFuncResponse().setFuncType(BeeConstant.FUNCTION_TYPE1);
+                AviatorFunctionEnum functionEnum = AviatorFunctionEnum.findByMethodName(name);
+                if (Objects.nonNull(functionEnum)) {
+                    aviatorFuncResponse.setFuncNameEn(functionEnum.getFunctionSignature());
+                    aviatorFuncResponse.setFuncNameZh(functionEnum.getChineseName());
+                    aviatorFuncResponse.setFuncDesc(functionEnum.getDescription());
+                    sysFuncList.add(aviatorFuncResponse);
+                }
             }
         }
         funMapList.put("sys", sysFuncList);
-        funMapList.put("def", this.loadFromDb(beeFuncList));
+        funMapList.put("def", this.aviatorFuncResponseList);
 
         return funMapList;
     }
 
-    private List<AviatorFuncResponse> loadFromDb(List<AviatorFuncResponse> beeFuncList) {
+    /**
+     * 加载已存在的函数定义
+     * @return
+     */
+    private List<AviatorFuncResponse> loadFromDb() {
+        List<AviatorFuncResponse> list = Lists.newArrayList();
         List<FunctionEntity> entityList = functionMapper.list(null);
         if (CollectionUtils.isEmpty(entityList)) {
-            return beeFuncList;
+            return Collections.emptyList();
         }
         for (FunctionEntity functionEntity : entityList) {
             try {
@@ -74,16 +99,16 @@ public class AviatorServiceImpl implements AviatorService {
             } catch (Exception e) {
                 log.error("加载自定义函数失败: {}", functionEntity.getFuncNameEn(), e);
             }
-            AviatorFuncResponse addAviatorFuncRequest = new AviatorFuncResponse()
+            AviatorFuncResponse aviatorFuncResponse = new AviatorFuncResponse()
                     .setFuncNameEn(functionEntity.getFuncNameEn())
                     .setFuncNameZh(functionEntity.getFuncNameZh())
                     .setFuncType(functionEntity.getFuncType())
                     .setFuncDesc(functionEntity.getDescription())
                     ;
-            beeFuncList.add(addAviatorFuncRequest);
+            list.add(aviatorFuncResponse);
         }
 
-        return beeFuncList;
+        return list;
     }
 
     @Override
@@ -108,10 +133,21 @@ public class AviatorServiceImpl implements AviatorService {
                     .setUpdatedTime(LocalDateTime.now())
                     ;
             functionMapper.insert(functionEntity);
+            addFuncToList(functionEntity);
             log.info("新增自定义函数 {}: {}", func.getFuncNameEn(), func.getFuncNameZh());
         } catch (Exception e) {
             throw BeeCoreExceptionUtil.build(e);
         }
+    }
+
+    private void addFuncToList(FunctionEntity functionEntity) {
+        AviatorFuncResponse aviatorFuncResponse = new AviatorFuncResponse()
+                .setFuncNameEn(functionEntity.getFuncNameEn())
+                .setFuncNameZh(functionEntity.getFuncNameZh())
+                .setFuncType(functionEntity.getFuncType())
+                .setFuncDesc(functionEntity.getDescription())
+                ;
+        this.aviatorFuncResponseList.add(aviatorFuncResponse);
     }
 
     private AviatorFunction compileAndInstantiate(String funcSource) throws Exception {

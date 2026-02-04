@@ -25,7 +25,8 @@ public class AviatorRuleEngine implements RuleEngine {
     /**
      * 缓存容量
      */
-    private static final int CACHE_CAPACITY = 10000;
+    private static final int CACHE_CAPACITY = Integer.parseInt((String) BeeUtils.getBeeProperties()
+            .getOrDefault("bee.aviator.cached.size", "10000"));
 
     static {
         INSTANCE.setOption(Options.FEATURE_SET, Feature.getFullFeatures());
