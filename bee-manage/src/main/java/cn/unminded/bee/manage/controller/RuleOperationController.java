@@ -154,6 +154,7 @@ public class RuleOperationController {
         RuleRecordEntity entity = new RuleRecordEntity();
         entity.setId(dto.getRuleId());
         entity.setRuleContent(JSON.toJSONString(dto.getRuleContent()));
+        entity.setVariableIdList(JSON.toJSONString(dto.getVariableIdList()));
         entity.setDescription(dto.getDescription());
         entity.setUpdatedTime(LocalDateTime.now());
 

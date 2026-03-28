@@ -1,4 +1,4 @@
-package cn.unminded.bee.manage.config;
+package cn.unminded.bee.common.config;
 
 import cn.unminded.bee.core.RuleExecutor;
 import cn.unminded.bee.core.engine.AviatorRuleEngine;

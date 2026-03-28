@@ -36,6 +36,7 @@
             rule_group,
             rule_name,
             rule_content,
+            variable_id_list,
             version,
             status,
             description,
@@ -54,6 +55,7 @@
                      `rule_group`,
                      `rule_name`,
                      `rule_content`,
+                     `variable_id_list`,
                      `version`,
                      `status`,
                      `description`,
@@ -65,6 +67,7 @@
                 #{ruleGroup},
                 #{ruleName},
                 #{ruleContent},
+                IFNULL(#{variableIdList}, null),
                 IFNULL(#{version}, '1'),
                 IFNULL(#{status}, 0),
                 IFNULL(#{description}, ''),
@@ -87,6 +90,9 @@
                 </if>
                 <if test="ruleContent != null">
                     rule_content = #{ruleContent},
+                </if>
+                <if test="variableIdList != null">
+                    variableIdList = #{variableIdList},
                 </if>
                 <if test="version != null and version != ''">
                     version = #{version},

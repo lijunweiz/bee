@@ -44,6 +44,11 @@ public class RuleRecordEntity {
      */
     private String ruleContent;
 
+    /**
+     * 变量id列表
+     */
+    private String variableIdList;
+
     private Integer status;
     /**
      * 规则描述

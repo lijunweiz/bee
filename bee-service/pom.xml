@@ -29,11 +29,6 @@
         </dependency>
         <dependency>
             <groupId>cn.unminded</groupId>
-            <artifactId>bee-core</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>cn.unminded</groupId>
             <artifactId>bee-turn</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

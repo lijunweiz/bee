@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,7 +50,7 @@ public class LogConfig {
      */
     @Around("@within(org.springframework.web.bind.annotation.RestController)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        Log logAnnotation = getLog(joinPoint.getSignature(), joinPoint.getTarget());
+        Log logAnnotation = getAnnotation(joinPoint.getSignature(), joinPoint.getTarget(), Log.class);
         if (Objects.isNull(logAnnotation)) {
             return joinPoint.proceed(joinPoint.getArgs());
         }
@@ -72,22 +73,23 @@ public class LogConfig {
     }
 
     /**
-     * 获取自定义{@link Log}
+     * 获取自定义注解
      * @param signature 切入点签名
      * @param obj 切入的对象
-     * @return 返回Log注解
+     * @param clazz 注解类
+     * @return 返回指定的注解实例，如果不存在则返回 null
      */
-    private Log getLog(Signature signature, Object obj) {
+    private <T extends Annotation> T getAnnotation(Signature signature, Object obj, Class<T> clazz) {
         if (signature instanceof MethodSignature) {
             MethodSignature methodSignature = (MethodSignature) signature;
             Method method = methodSignature.getMethod();
-            Log log = method.getAnnotation(Log.class);
-            if (Objects.nonNull(log)) {
-                return log;
+            T annotation = method.getAnnotation(clazz);
+            if (Objects.nonNull(annotation)) {
+                return annotation;
             }
         }
 
-        return obj.getClass().getAnnotation(Log.class);
+        return obj.getClass().getAnnotation(clazz);
     }
 
     /**

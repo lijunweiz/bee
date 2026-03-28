@@ -18,6 +18,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>cn.unminded</groupId>
+            <artifactId>bee-core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
