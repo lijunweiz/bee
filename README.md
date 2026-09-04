@@ -145,4 +145,4 @@ bee
 
 ## License
 
-This project is licensed under the terms of the repository license.
+This project is licensed under the MIT License.
