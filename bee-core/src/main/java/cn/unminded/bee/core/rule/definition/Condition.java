@@ -6,7 +6,7 @@ import java.util.List;
  * @author lijunwei
  */
 public class Condition {
-    private String operator; // e.g. AND
+    private String operator; // 比如 AND
     private List<ConditionChild> children;
 
     public String getOperator() {

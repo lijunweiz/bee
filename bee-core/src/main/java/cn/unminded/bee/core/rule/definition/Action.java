@@ -4,11 +4,11 @@ package cn.unminded.bee.core.rule.definition;
  * @author lijunwei
  */
 public class Action {
-    private String type; // e.g. assign
-    private String field; // e.g. decisionResult
-    private String operator; // e.g. =
-    private String itemDesc; // e.g. 赋值
-    private String value; // e.g. 通过
+    private String type; // 比如 assign
+    private String field; // 比如 decisionResult
+    private String operator; // 比如 =
+    private String itemDesc; // 比如 赋值
+    private String value; // 比如 通过
 
     public String getType() {
         return type;

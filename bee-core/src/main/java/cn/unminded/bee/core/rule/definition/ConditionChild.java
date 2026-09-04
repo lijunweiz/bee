@@ -4,10 +4,10 @@ package cn.unminded.bee.core.rule.definition;
  * @author lijunwei
  */
 public class ConditionChild {
-    private String field; // e.g. firstLoanTime
-    private String op; // e.g. >=
-    private String itemDesc; // e.g. 等于
-    private String value; // e.g. 30
+    private String field; // 比如 firstLoanTime
+    private String op; // 比如 >=
+    private String itemDesc; // 比如 等于
+    private String value; // 比如 30
 
     public String getField() {
         return field;
